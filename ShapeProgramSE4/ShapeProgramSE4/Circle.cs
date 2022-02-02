@@ -18,9 +18,14 @@ namespace ShapeProgramSE4
         {
             Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
             Brush b = new SolidBrush(colour);  //brush paints the interior of a shape
-           
             g.FillEllipse(b, x, y, radius * 2, radius * 2);
             g.DrawEllipse(p, x, y, radius * 2, radius * 2);
+        }
+
+
+        public override string ToString()
+        {
+            return base.ToString() + " " + this.radius;
         }
     }
 }
