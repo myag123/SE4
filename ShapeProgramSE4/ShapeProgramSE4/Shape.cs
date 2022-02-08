@@ -9,7 +9,7 @@ using System.Text;
  */
 namespace ShapeProgramSE4
 {
-    abstract class Shape
+    abstract class Shape:ShapeInterface
     {
         //declaring protected variables/properties of a shape that can be referenced in inherited classes
         protected Color colour;
@@ -23,9 +23,23 @@ namespace ShapeProgramSE4
             this.y = y; //y position
         }
 
-        public abstract void draw(Graphics g); //any classes that inherit Shape will implement this method
+        protected Shape()
+        {
+        }
 
-        //derived from object class
+        //must have the methods of the interface as it implements shapesInterface, essentially passing the repsonsiblities on
+        //any classes that inherit Shape will implement these following abstract methods below
+        public abstract void draw(Graphics g); 
+        public abstract double calcArea(); 
+        public abstract double calcPerimeter();
+
+        public virtual void set(Color colour, params int[] list) //creating virtual set method to be filled in later in derived classes
+        {
+            this.colour = colour;
+            this.x = list[0];
+            this.y = list[1]; //all shapes have this in common
+        }
+
         public override string ToString()
         {
             return base.ToString()+ "  " + this.x + "," + this.y + " : ";

@@ -10,6 +10,11 @@ namespace ShapeProgramSE4
         int width, height;
         Point[] pts = new Point[3]; //creating points for triangle shape
 
+        public Triangle() :base() //explicitly calling shape constructor
+        {
+
+        }
+
         public Triangle(Color colour, int x, int y, int width, int height) : base(colour, x, y)
         {
             this.width = width;
@@ -23,6 +28,13 @@ namespace ShapeProgramSE4
             pts[2].X = width / 2 - 50;
             pts[2].Y = height / 2 + 50;
         }
+
+        public override void set(Color colour, params int[] list)
+        {
+            base.set(colour, list[0], list[1]); //calling shape class setting colour, x, y, radius passing it through list
+            this.width = list[2];
+            this.height = list[3];
+        }
         public override void draw(Graphics g)
         {
             Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
@@ -31,6 +43,16 @@ namespace ShapeProgramSE4
             g.FillPolygon(b, pts); //filling in colour of triangle
             g.DrawPolygon(p, pts); //drawing triangle passing in points of triangle from array
             
+        }
+
+        public override double calcArea()
+        {
+           return height * width / 2;
+        }
+
+        public override double calcPerimeter()
+        {
+            return 0; //fill in later
         }
 
         public override string ToString()

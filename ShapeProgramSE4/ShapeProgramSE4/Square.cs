@@ -13,6 +13,11 @@ namespace ShapeProgramSE4
     {
         private int size; //only one size can be applied to all sides of a square
 
+        public Square() :base() //explicitly calling constructor rectangle
+        { 
+
+        }
+
         public Square(Color colour, int x, int y, int size) : base(colour, x, y, size, size)
         {
             this.size = size;

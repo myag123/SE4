@@ -17,6 +17,18 @@ namespace ShapeProgramSE4
             this.height = height;
         }
 
+        public Rectangle()
+        {
+        }
+
+        //overriding set method
+        public override void set(Color colour, params int[] list)
+        {
+            base.set(colour, list[0], list[1]); //calling shape class setting colour, width and height through list
+            this.width = list[2];
+            this.height = list[3];
+        }
+
 
         //Overriding draw method with code for specific Rectangle shape
         public override void draw(Graphics g)
@@ -25,6 +37,16 @@ namespace ShapeProgramSE4
             Brush b = new SolidBrush(colour);  //brush paints the interior of a shape
             g.FillRectangle(b, x, y, width, height);  //fills rectangle with brush
             g.DrawRectangle(p, x, y, width, height);   //draws rectangle
+        }
+
+        public override double calcArea()
+        {
+            return width * height; //calculating area
+        }
+
+        public override double calcPerimeter()
+        {
+            return width + height; //calculating perimeter
         }
 
         public override string ToString()
