@@ -28,84 +28,108 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.canvasBox = new System.Windows.Forms.PictureBox();
+            this.txtCmdBox = new System.Windows.Forms.TextBox();
+            this.btnRun = new System.Windows.Forms.Button();
+            this.lbl1 = new System.Windows.Forms.Label();
+            this.helpBtn = new System.Windows.Forms.Button();
+            this.txtCmdLine = new System.Windows.Forms.TextBox();
+            this.lbl2 = new System.Windows.Forms.Label();
+            this.lbl3ErrorMsg = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.canvasBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // canvasBox
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.pictureBox1.Location = new System.Drawing.Point(476, 126);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(500, 448);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.canvasBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.canvasBox.Location = new System.Drawing.Point(476, 92);
+            this.canvasBox.Name = "canvasBox";
+            this.canvasBox.Size = new System.Drawing.Size(500, 448);
+            this.canvasBox.TabIndex = 0;
+            this.canvasBox.TabStop = false;
+            this.canvasBox.Paint += new System.Windows.Forms.PaintEventHandler(this.canvasBox_Paint);
             // 
-            // textBox1
+            // txtCmdBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 92);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(404, 400);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtCmdBox.Location = new System.Drawing.Point(12, 92);
+            this.txtCmdBox.Multiline = true;
+            this.txtCmdBox.Name = "txtCmdBox";
+            this.txtCmdBox.Size = new System.Drawing.Size(404, 400);
+            this.txtCmdBox.TabIndex = 1;
+            this.txtCmdBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtCmdBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCmdBox_KeyDown);
             // 
-            // button1
+            // btnRun
             // 
-            this.button1.Location = new System.Drawing.Point(322, 545);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 29);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Run";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnRun.Location = new System.Drawing.Point(322, 586);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(94, 29);
+            this.btnRun.TabIndex = 2;
+            this.btnRun.Text = "Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
+            // lbl1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 69);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(195, 20);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Enter your command below:";
+            this.lbl1.AutoSize = true;
+            this.lbl1.Location = new System.Drawing.Point(12, 69);
+            this.lbl1.Name = "lbl1";
+            this.lbl1.Size = new System.Drawing.Size(195, 20);
+            this.lbl1.TabIndex = 3;
+            this.lbl1.Text = "Enter your command below:";
             // 
-            // button2
+            // helpBtn
             // 
-            this.button2.Location = new System.Drawing.Point(882, 620);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(94, 29);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Help";
-            this.button2.UseVisualStyleBackColor = true;
+            this.helpBtn.Location = new System.Drawing.Point(882, 620);
+            this.helpBtn.Name = "helpBtn";
+            this.helpBtn.Size = new System.Drawing.Size(94, 29);
+            this.helpBtn.TabIndex = 4;
+            this.helpBtn.Text = "Help";
+            this.helpBtn.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // txtCmdLine
             // 
-            this.textBox2.Location = new System.Drawing.Point(12, 509);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(404, 27);
-            this.textBox2.TabIndex = 5;
+            this.txtCmdLine.Location = new System.Drawing.Point(12, 539);
+            this.txtCmdLine.Name = "txtCmdLine";
+            this.txtCmdLine.Size = new System.Drawing.Size(404, 27);
+            this.txtCmdLine.TabIndex = 5;
+            this.txtCmdLine.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCmdLine_KeyDown);
+            // 
+            // lbl2
+            // 
+            this.lbl2.AutoSize = true;
+            this.lbl2.Location = new System.Drawing.Point(12, 508);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(232, 20);
+            this.lbl2.TabIndex = 6;
+            this.lbl2.Text = "Enter your short command below:";
+            // 
+            // lbl3ErrorMsg
+            // 
+            this.lbl3ErrorMsg.AutoSize = true;
+            this.lbl3ErrorMsg.Location = new System.Drawing.Point(476, 560);
+            this.lbl3ErrorMsg.Name = "lbl3ErrorMsg";
+            this.lbl3ErrorMsg.Size = new System.Drawing.Size(79, 20);
+            this.lbl3ErrorMsg.TabIndex = 7;
+            this.lbl3ErrorMsg.Text = "ResultMSg";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(997, 661);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.lbl3ErrorMsg);
+            this.Controls.Add(this.lbl2);
+            this.Controls.Add(this.txtCmdLine);
+            this.Controls.Add(this.helpBtn);
+            this.Controls.Add(this.lbl1);
+            this.Controls.Add(this.btnRun);
+            this.Controls.Add(this.txtCmdBox);
+            this.Controls.Add(this.canvasBox);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canvasBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -113,12 +137,14 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.PictureBox canvasBox;
+        private System.Windows.Forms.TextBox txtCmdBox;
+        private System.Windows.Forms.Button btnRun;
+        private System.Windows.Forms.Label lbl1;
+        private System.Windows.Forms.Button helpBtn;
+        private System.Windows.Forms.TextBox txtCmdLine;
+        private System.Windows.Forms.Label lbl2;
+        private System.Windows.Forms.Label lbl3ErrorMsg;
     }
 }
 

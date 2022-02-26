@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-/*
- * Abstract class named Shape containing abstract methods which other classes will inherit.  
- * All shapes are required to have a colour and a specifiy x and y axis position.
- *
- */
+
 namespace ShapeProgramSE4
 {
+    /// <summary>
+    /// Abstract class named Shape containing abstract methods which other classes will inherit.  
+    /// All shapes are required to have a colour and a specifiy x and y axis position.
+    /// </summary>
     abstract class Shape:ShapeInterface
     {
         //declaring protected variables/properties of a shape that can be referenced in inherited classes

@@ -5,9 +5,13 @@ using System.Text;
 
 namespace ShapeProgramSE4
 {
+    /// <summary>
+    /// The Circle class extends its base class Shape and implements all of its abstract methods
+    /// which are overriden and further developed.
+    /// </summary>
     class Circle : Shape //extends shape (base class)
     {
-        int radius;  //declaring radius of circle variable
+        int radius; 
 
         public Circle() : base() //explicitly calling constructor of shape
         { 
