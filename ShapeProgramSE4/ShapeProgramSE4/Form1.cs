@@ -24,12 +24,13 @@ namespace ShapeProgramSE4
         const int screenWidth = 1110;
         const int screenHeight = 760;
 
+
+
         Bitmap OutputBitmap = new Bitmap(mapWidth, mapHeight); //creating bitmap to draw on inside canvas box
         Canvas MyCanvas; //creating object of canvas
         Parser MyParser; //creating object of parser
         //ProcessCommand MyCommand; //creating object of process command
 
-        //String totalText = "square"; //concept idea, not permanent
         ArrayList shapes = new ArrayList(); //creating an array list
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace ShapeProgramSE4
         {
             InitializeComponent();
             MyCanvas = new Canvas(Graphics.FromImage(OutputBitmap)); //assigning canvas to bitmap so it can be drawn on
+ 
             //setting screen size values
             this.Width = screenWidth;
             this.Height = screenHeight;
@@ -64,7 +66,7 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// This method is the Paint method, its used to draw...
+        /// This method is the Paint method. When form has been resized it will draw image back in box.
         /// </summary>
         /// <param name="sender">Contains object that raised event.</param>
         /// <param name="e">Passes in paint event data.</param>
@@ -75,8 +77,6 @@ namespace ShapeProgramSE4
             Graphics g = e.Graphics; //creates graphics object
             g.DrawImageUnscaled(OutputBitmap, 0, 0); //drawing bitmap onto canvasBox
 
-            // setCommand(g, totalText); //example of what could happen
-            // g.Dispose(); //closing down graphics
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -90,39 +90,20 @@ namespace ShapeProgramSE4
 
         }
         /// <summary>
-        /// Method for button1_click.
-        /// When the user clicks 
+        /// Method for when user clicks btnRun
         /// </summary>
         /// <param name="sender">Contains object that raised event.</param>
         /// <param name="e">Passes in button click event data</param>
         private void button1_Click(object sender, EventArgs e)
         {
             Debug.WriteLine("User clicked Run"); //for logging
-
-            // totalText = txtCmdBox.Text.ToString(); //setting text from user to equal string total text
-            // Debug.WriteLine(totalText);
-
-            /* if (totalText.Equals("square"))
-             {
-                Debug.WriteLine("Square typed"); //for logging
-             }*/
-
         }
 
-        public void setCommand(Graphics g, String shapeName)
-        {
-            /*Shape s;
-            ShapeFactory factory1 = new ShapeFactory();
-
-            if (shapeName.Equals("square"))
-            {
-                s = factory1.getShape("square");
-                s.set(Color.Red, 100, 100, 200, 200);
-                shapes.Add(s);
-                s.draw(g);
-            }*/
-        }
-
+        /// <summary>
+        /// Method passes user input in cmdLine to parser when user hits enter
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtCmdLine_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) //If user clicks enter key on command line
@@ -131,11 +112,10 @@ namespace ShapeProgramSE4
                 String command;
                 command = txtCmdLine.Text.ToString().ToLower().Trim(); //setting string to equal input of user in lowercase
                 Debug.WriteLine("command" + command);
-                MyParser = new Parser(command); //passing typed input into parser class for processing
+                MyParser = new Parser(command, MyCanvas); //passing typed input into parser class for processing
 
                 txtCmdLine.Text = ""; //clearing down the command line
-
-                //Refresh();//display needs updating
+                Refresh(); //display needs updating
             }
         }
 
@@ -151,17 +131,16 @@ namespace ShapeProgramSE4
                 Debug.WriteLine("User hit enter on command box.");
                 String[] allLines = txtCmdBox.Text.ToString().ToLower().Trim().Split("\n"); //create string array, split by newline
 
-                for (int i = 0; i < allLines.Length;) ////passing user input to parser class line by line
+                for (int i = 0; i < allLines.Length;) //passing user input to parser class line by line
                 {
-                    MyParser = new Parser(allLines[i]);
+                    MyParser = new Parser(allLines[i],MyCanvas);
                     Debug.WriteLine(allLines[i]);
                     i++;
                 }
 
-                txtCmdBox.Text = ""; //clearing down the command line
-
-                //Refresh();//display needs updating
+                Refresh(); //display needs updating
             }
         }
+
     }
 }

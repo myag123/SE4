@@ -9,7 +9,11 @@ namespace ShapeProgramSE4
 {
     class ShapeFactory
     {
-        //creating method to getShape
+        /// <summary>
+        /// Method to get shape and return the shapes obejct based on user input.
+        /// </summary>
+        /// <param name="shapeType">Input from user.</param>
+        /// <returns></returns>
         public Shape getShape(string shapeType)
         {
             shapeType = shapeType.ToLower().Trim();

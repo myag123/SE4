@@ -38,7 +38,7 @@ namespace ShapeProgramSE4
         public override void draw(Graphics g)
         {
             Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
-            Brush b = new SolidBrush(colour);  //brush paints the interior of a shape
+            Brush b = new SolidBrush(colour); //brush paints the interior of a shape
 
             g.FillPolygon(b, pts); //filling in colour of triangle
             g.DrawPolygon(p, pts); //drawing triangle passing in points of triangle from array

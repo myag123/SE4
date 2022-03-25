@@ -9,11 +9,14 @@ namespace ShapeProgramSE4
     /// The Circle class extends its base class Shape and implements all of its abstract methods
     /// which are overriden and further developed.
     /// </summary>
-    class Circle : Shape //extends shape (base class)
+    class Circle : Shape
     {
-        int radius; 
+        int radius;
 
-        public Circle() : base() //explicitly calling constructor of shape
+        /// <summary>
+        /// Method explicitly calling constructor of shape.
+        /// </summary>
+        public Circle() : base() 
         { 
 
         }
@@ -29,6 +32,10 @@ namespace ShapeProgramSE4
             this.radius = list[2];
         }
 
+        /// <summary>
+        /// Draw method to draw shape.
+        /// </summary>
+        /// <param name="g"></param>
         public override void draw(Graphics g)
         {
             Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
@@ -37,14 +44,22 @@ namespace ShapeProgramSE4
             g.DrawEllipse(p, x, y, radius * 2, radius * 2);
         }
 
+        /// <summary>
+        /// Method to calculate area of circle.
+        /// </summary>
+        /// <returns></returns>
         public override double calcArea()
         {
             return Math.PI * (radius ^ 2); //calculating area
         }
 
+        /// <summary>
+        /// Method to calculate circles perimeter.
+        /// </summary>
+        /// <returns></returns>
         public override double calcPerimeter()
         {
-            return 2 * Math.PI * radius; //calculating perimeter
+            return 2 * Math.PI * radius; 
         }
 
         public override string ToString()
