@@ -9,15 +9,17 @@ namespace ShapeProgramSE4
     /// Canvas class handles the programs drawing system. It will control the Pen's properties and its positions 
     /// depending on user input. It will also contain all the methods to allow the user to draw a shape. 
     /// </summary>
-    class Canvas
+    public class Canvas
     {
-        //Declaring properties of canvas
         Graphics g;
-        Pen Pen;
-        Pen turtlePen;
-        int xPos, yPos, xOldPos, yOldPos;
-        SolidBrush brush = new SolidBrush(Color.Black);
-        ShapeFactory factory = null; //trying to set factory
+        int xPos, yPos;
+        Bitmap bm;
+        Pen pen = new Pen(Color.Black, 2);
+
+        /* public Canvas()
+         { 
+
+         }*/
 
         /// <summary>
         /// Canvas constructor, setting properties of canvas.
@@ -27,13 +29,12 @@ namespace ShapeProgramSE4
         public Canvas(Graphics g)
         {
             this.g = g;
-            Pen = new Pen(Color.Black, 2);
+            Pen pen = new Pen(Color.Black, 2); //setting pen colour to black
+
             //position of pen point
             xPos = 10;
             yPos = 10;
-            xOldPos = 10;
-            yOldPos = 10;
-            
+
         }
 
         /// <summary>
@@ -41,9 +42,9 @@ namespace ShapeProgramSE4
         /// </summary>
         /// <param name="toX">x axis position to draw to</param>
         /// <param name="toY">y axis position to draw to</param>
-        public void drawLine(int toX, int toY)
+        public void drawTo(int toX, int toY)
         {
-            g.DrawLine(Pen, xPos, yPos, toX, toY); //draws line between points 
+            g.DrawLine(pen, xPos, yPos, toX, toY); //draws line between points 
 
             //updating pens position so pen draws from last position    
             xPos = toX;
@@ -52,7 +53,7 @@ namespace ShapeProgramSE4
 
         public void drawSquare(int height, int width)
         {
-           // g.DrawRectangle(Pen, xPos, yPos, height, width); needs work!
+            // g.DrawRectangle(Pen, xPos, yPos, height, width); needs work!
             Square square = new Square();
             Color coll = Color.Black;
             square.set(coll, xPos, yPos, height, width);
@@ -71,14 +72,9 @@ namespace ShapeProgramSE4
             this.yPos = yPos;
         }
 
-
-        public void moveTurtle(int xOldPos, int yOldPos, int xPos, int yPos)
-        {
-            turtlePen = new Pen(Color.Red, 2);
-            g.FillRectangle(brush, xOldPos, yOldPos, 3, 3);
-            g.DrawRectangle(Pen, xPos, yPos, 3, 3);
-        }
-
+        /// <summary>
+        /// Method to set canvas back to original colour pink - to clear canvas.
+        /// </summary>
         public void Clear()
         {
             g.Clear(Color.DeepPink);
@@ -105,7 +101,5 @@ namespace ShapeProgramSE4
             triangle.set(coll, width, height);
             triangle.draw(g);
         }
-            
-
     }
 }

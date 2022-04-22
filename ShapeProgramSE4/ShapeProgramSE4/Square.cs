@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-/*
- * Square class extends rectangle as a square shares most of the same properties with a rectangle. 
- * Only difference is that one size is applied to all sides of a square.
- * Therefore size is applied to Rectangle
- */
+
 namespace ShapeProgramSE4
 {
-    class Square : Rectangle //extends rectangle
+    /// <summary>
+    /// Square class extends rectangle as a square shares most of the same properties with a rectangle. 
+    /// Only difference is that one size is applied to all sides of a square.
+    /// </summary>
+    class Square : Rectangle 
     {
         private int size; //only one size can be applied to all sides of a square
 
@@ -23,9 +23,13 @@ namespace ShapeProgramSE4
             this.size = size;
         }
 
+        /// <summary>
+        /// References draw method in Rectangle class 
+        /// </summary>
+        /// <param name="g"></param>
         public override void draw(Graphics g)
         {
-            base.draw(g); //references draw method in Rectangle class
+            base.draw(g);
         }
     }
 }

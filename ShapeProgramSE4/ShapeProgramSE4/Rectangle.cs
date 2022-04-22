@@ -5,23 +5,40 @@ using System.Text;
 
 namespace ShapeProgramSE4
 {
-    class Rectangle : Shape //extends shape
+    /// <summary>
+    /// Rectangle class extends Shape.
+    /// Contains all methods appropriate to draw, calculate area, calculate perimeter and set properties of a Rectangle.
+    /// </summary>
+    class Rectangle : Shape 
     {
-        int width, height; //declaring dimension variables 
+        int width, height;
 
-        //Constructor, passing in many paramaters including width and height, extending base class shape
+        /// <summary>
+        /// Constructor method for Rectangle class - passing in many parameters and extending base class (Shape)
+        /// </summary>
+        /// <param name="colour">Parameter for rectangle colour</param>
+        /// <param name="x">Parameter for x axis</param>
+        /// <param name="y">Parameter for y axis</param>
+        /// <param name="width">Parameter for width of Rectangle</param>
+        /// <param name="height">Parameter for height of Rectangle</param>
         public Rectangle(Color colour, int x, int y, int width, int height) : base(colour, x, y)
         {
-            //setting extra width and height properties
             this.width = width; 
             this.height = height;
         }
 
+        /// <summary>
+        /// Constructor class for Rectangle.
+        /// </summary>
         public Rectangle()
         {
         }
 
-        //overriding set method
+        /// <summary>
+        /// Overriding set method for Rectangle.
+        /// </summary>
+        /// <param name="colour">Parameter for colour of Rectangle</param>
+        /// <param name="list">Parameter for integer array list for properties of Rectangle</param>
         public override void set(Color colour, params int[] list)
         {
             base.set(colour, list[0], list[1]); //calling shape class setting colour, width and height through list
@@ -29,8 +46,10 @@ namespace ShapeProgramSE4
             this.height = list[3];
         }
 
-
-        //Overriding draw method with code for specific Rectangle shape
+        /// <summary>
+        /// Overriding draw method with code to draw specific Rectangle shape to graphics class
+        /// </summary>
+        /// <param name="g"></param>
         public override void draw(Graphics g)
         {
             Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
@@ -39,19 +58,27 @@ namespace ShapeProgramSE4
             g.DrawRectangle(p, x, y, width, height);   //draws rectangle
         }
 
+        /// <summary>
+        /// Method for calculating area of Rectangle. Width times Height.
+        /// </summary>
+        /// <returns></returns>
         public override double calcArea()
         {
-            return width * height; //calculating area
+            return width * height; 
         }
 
+        /// <summary>
+        /// Method for calculating perimeter of Rectangle. Width plus Height.
+        /// </summary>
+        /// <returns></returns>
         public override double calcPerimeter()
         {
-            return width + height; //calculating perimeter
+            return width + height; 
         }
 
         public override string ToString()
         {
-            return base.ToString() + " " + this.width + "  " + this.height;
+            return base.ToString() + "Rectangle" + " " + this.width + "  " + this.height;
         }
     }
 }

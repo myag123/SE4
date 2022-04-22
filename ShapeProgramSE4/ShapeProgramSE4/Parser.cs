@@ -7,104 +7,69 @@ using System.Drawing;
 namespace ShapeProgramSE4
 {
     /// <summary>
-    /// This class will get the user input from the text boxes on the form interface and split them up into 
-    /// arrays and then process the information inside the arrays so a shape can be drawn on the screen depending 
-    /// on the users input.
+    /// Parser class requires canvas object to be passed into its constructor method in order to draw command on Canvas.
+    /// Parser class has a command method which requires user input of command and will return a true or false result.
+    /// Parser class is overall responsible for splitting up a range of commands into arrays and passing them to a 
+    /// command class so the command can be eventually drawn on the canvas.
     /// </summary>
     class Parser
     {
-        //Creating variables for Parser
-        String command, toX, toY;
-        String[] splitter;
-        String[] parameters;
-        int oldX, oldY;
+        String[] splitter; //array string to split up command 
+        String name, coords;
 
+        CommandFactory CommFactory = new CommandFactory();
+        Canvas canvas;
 
         /// <summary>
-        /// Parser class takes in user input and splits it up to store inside different arrays.
+        /// Constructor for parser class requires Canvas to be passed in.
         /// </summary>
-        /// <param name="input">Input from user - usually command syntax followed by values.</param>
-        /// <param name="c">Canvas is passed into method for pen to draw on it</param>
-        public Parser(String input, Canvas c)
+        /// <param name="c">Object of canvas class.</param>
+        public Parser(Canvas c)
         {
-            if (input.Equals("clear")) //if user inputs clear, then canvas will be cleared
-            {
-                c.Clear(); //make colour as constant in method!
-                Debug.WriteLine("Clear canvas");
-            }
-            else
-            {
-                splitter = input.Split(" "); //split up user input by space
+           canvas = c;
+        }
+
+        /// <summary>
+        /// Command method to ParseCommand from inputted parameters.
+        /// </summary>
+        /// <param name="command">Command parameter e.g. MoveTo 100,200</param>
+        /// <param name="execute">Boolean True/False</param>
+        /// <returns>Returns true if successful and false if failed.</returns>
+        public Command ParseCommand(String command, bool execute)
+        {
+                splitter = command.Split(" "); //split up user input by space drawto 100,150 .. drawto||100,150
 
                 for (int i = 0; i < splitter.Length; i++) //loop to assign user input to arrays
                 {
                     Debug.WriteLine(splitter[i]);
                     command = splitter[i];
                     i++;
-                    parameters = splitter[i].Split(",");
-
-                    if (parameters.Length != 2) //if user inputs more than 2 width/height values then application error occurs
-                    {
-                        throw new ApplicationException("Incorrect number of parameters in syntax, please enter width or x axis & height or y axis only."); //error raised
-                    }
-
-                    Debug.WriteLine(parameters.Length); //for debugging
-
-                    //assigning variables to parameters
-                    toX = parameters[0];
-                    toY = parameters[1];
-
-                    oldX = Int32.Parse(toX);
-                    oldY = Int32.Parse(toY);
-
-                    Debug.WriteLine("X: " + toX + " Y: " + toY); //for debugging
                 }
 
-                if (command.Equals("drawto") == true) //if command equal drawto then x and y parameters are converted to integers and line is drawn 
+                if (command.Equals("drawto") == true) //if command equals drawto then command is split into arrays and passed to drawto class
                 {
-                    c.drawLine(Int32.Parse(toX), Int32.Parse(toY));
-                    c.moveTurtle(oldY,oldX,Int32.Parse(toX), Int32.Parse(toY));
-                }
+                    DrawTo dtCommand = (DrawTo) CommFactory.MakeCommand("drawto"); //creating drawto command from factory class
+                    name = splitter[0].ToString();
+                    coords = splitter[1].ToString();
 
-                if (command.Equals("drawsquare") == true) //drawsquare command will draw a square based on inputted values
+                    dtCommand.Set(canvas, name, coords); //calling set method of DrawTo class to draw on canavs
+                    if (execute == true) { dtCommand.Execute(); return dtCommand; } //if execute method returns true then return command
+                }
+                if (command.Equals("moveto") == true)
                 {
-                    if (toX == toY)
-                    {
-                        c.drawSquare(Int32.Parse(toX), Int32.Parse(toY)); //calling DrawSquare method to canvas
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Invalid"); 
-                        throw new ApplicationException("\n To draw a square the height and width must be the same values.");
-                    }
-                }
+                    MoveTo mtCommand = (MoveTo)CommFactory.MakeCommand("moveto");
+                    name = splitter[0].ToString();
+                    coords = splitter[1].ToString();
 
-                if (command.Equals("drawtriangle") == true)
+                    mtCommand.Set(canvas, name, coords); //calling set method of MoveTo class to draw on canavs
+                    if (execute == true) { mtCommand.Execute(); return mtCommand; } //if execute method returns true then return command
+                }
+                else
                 {
-                    c.drawTriangle(Int32.Parse(toX), Int32.Parse(toY));
-                    Debug.WriteLine("triangle drawn?");
+                    throw new ApplicationException("wrong"); //add in proper exception later
                 }
 
-                    /* if (command.Equals("drawcircle") == true)//needs work
-                     {
-                         c.drawCircle(Int32.Parse(toX));
-                         Debug.WriteLine("circle drawn?");
-                     }    */
-
-                    if (command.Equals("moveto") == true) //moveto command will move pen point to inputted values
-                {
-                    c.moveTo(Int32.Parse(toX), Int32.Parse(toY));  
-                    c.moveTurtle(oldY, oldX, Int32.Parse(toX), Int32.Parse(toY));
-                    Debug.WriteLine("moveto inputted");
-                }
-
-                if (command.Equals("reset")) //when user types reset pen will move to start position
-                { 
-                    
-                }
-
-            }
+            return null;
         }
-
     }
 }

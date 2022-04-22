@@ -50,7 +50,7 @@ namespace ShapeProgramSE4
         /// <returns></returns>
         public override double calcArea()
         {
-            return Math.PI * (radius ^ 2); //calculating area
+            return Math.PI * (radius ^ 2); 
         }
 
         /// <summary>

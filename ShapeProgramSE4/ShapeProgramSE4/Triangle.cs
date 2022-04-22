@@ -5,6 +5,10 @@ using System.Text;
 
 namespace ShapeProgramSE4
 {
+    /// <summary>
+    /// Triangle class extends shape.
+    /// Contains all methods appropriate to draw, calculate area, calculate perimeter and set properties of a Triangle.
+    /// </summary>
     class Triangle : Shape
     {
         int width, height;
@@ -35,6 +39,11 @@ namespace ShapeProgramSE4
             this.width = list[2];
             this.height = list[3];
         }
+
+        /// <summary>
+        /// Method overriding draw method, with code to draw specific Polygon triangle shape to graphics class.
+        /// </summary>
+        /// <param name="g"></param>
         public override void draw(Graphics g)
         {
             Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
