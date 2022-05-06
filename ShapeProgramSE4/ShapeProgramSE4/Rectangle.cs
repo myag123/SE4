@@ -12,6 +12,7 @@ namespace ShapeProgramSE4
     class Rectangle : Shape 
     {
         int width, height;
+        Color colour;
 
         /// <summary>
         /// Constructor method for Rectangle class - passing in many parameters and extending base class (Shape)
@@ -25,6 +26,7 @@ namespace ShapeProgramSE4
         {
             this.width = width; 
             this.height = height;
+            this.colour = colour;
         }
 
         /// <summary>
@@ -35,34 +37,44 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Overriding set method for Rectangle.
+        /// Set method for Rectangle class.
+        /// Sets all parameters to equal user input.
         /// </summary>
         /// <param name="colour">Parameter for colour of Rectangle</param>
         /// <param name="list">Parameter for integer array list for properties of Rectangle</param>
-        public override void set(Color colour, params int[] list)
+        public override void Set(Color colour, params int[] list)
         {
-            base.set(colour, list[0], list[1]); //calling shape class setting colour, width and height through list
+            base.Set(colour, list[0], list[1]); //calling shape class setting colour, width and height through list
             this.width = list[2];
             this.height = list[3];
+            this.colour = colour;
         }
 
         /// <summary>
         /// Overriding draw method with code to draw specific Rectangle shape to graphics class
         /// </summary>
-        /// <param name="g"></param>
-        public override void draw(Graphics g)
+        /// <param name="g">Object that creates canvas for user to draw on.</param>
+        public override void Draw(Graphics g, String fillFlag)
         {
-            Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
+            Pen p = new Pen(colour, 2); //creates pen object, pen draws border around a shape
             Brush b = new SolidBrush(colour);  //brush paints the interior of a shape
-            //g.FillRectangle(b, x, y, width, height);  //fills rectangle with brush
-            g.DrawRectangle(p, x, y, width, height);   //draws rectangle
+            
+            if (fillFlag == "N")
+            {
+                g.DrawRectangle(p, x, y, width, height);   //draws rectangle outline
+            }
+            if (fillFlag == "Y")
+            {
+                g.FillRectangle(b, x, y, width, height);
+            }
+            
         }
 
         /// <summary>
         /// Method for calculating area of Rectangle. Width times Height.
         /// </summary>
         /// <returns></returns>
-        public override double calcArea()
+        public override double CalcArea()
         {
             return width * height; 
         }
@@ -71,7 +83,7 @@ namespace ShapeProgramSE4
         /// Method for calculating perimeter of Rectangle. Width plus Height.
         /// </summary>
         /// <returns></returns>
-        public override double calcPerimeter()
+        public override double CalcPerimeter()
         {
             return width + height; 
         }
@@ -79,6 +91,11 @@ namespace ShapeProgramSE4
         public override string ToString()
         {
             return base.ToString() + "Rectangle" + " " + this.width + "  " + this.height;
+        }
+
+        public override void Draw(Graphics g)
+        {
+            throw new NotImplementedException();
         }
     }
 }

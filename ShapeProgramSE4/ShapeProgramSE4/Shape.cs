@@ -28,19 +28,20 @@ namespace ShapeProgramSE4
         {
         }
 
-        public abstract void draw(Graphics g);
+        public abstract void Draw(Graphics g);
+        public abstract void Draw(Graphics g, String Fill);
 
         /// <summary>
-        /// Abstrract method for calculating area of Shape. Width times Height.
+        /// Abstract method for calculating area of Shape. Width times Height.
         /// </summary>
         /// <returns></returns>
-        public abstract double calcArea();
+        public abstract double CalcArea();
 
         /// <summary>
         /// Abstract method for calculating perimeter of Shape. Width plus Height.
         /// </summary>
         /// <returns></returns>
-        public abstract double calcPerimeter();
+        public abstract double CalcPerimeter();
 
         /// <summary>
         /// Virtual method to set colour and parameter list, to be filled in later in derived classes.
@@ -48,13 +49,17 @@ namespace ShapeProgramSE4
         /// </summary>
         /// <param name="colour"></param>
         /// <param name="list"></param>
-        public virtual void set(Color colour, params int[] list) 
+        public virtual void Set(Color colour, params int[] list) 
         {
             this.colour = colour;
             this.x = list[0];
             this.y = list[1]; 
         }
 
+        /// <summary>
+        /// Overriding ToString method.
+        /// </summary>
+        /// <returns>Returns name of class and inputted parameters.</returns>
         public override string ToString()
         {
             return base.ToString()+ "  " + this.x + "," + this.y + " : ";

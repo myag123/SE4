@@ -12,6 +12,7 @@ namespace ShapeProgramSE4
     class Circle : Shape
     {
         int radius;
+        Color colour;
 
         /// <summary>
         /// Method explicitly calling constructor of shape.
@@ -21,34 +22,60 @@ namespace ShapeProgramSE4
 
         }
 
+        /// <summary>
+        /// Constructor method for Circle class - passing in many parameters and extending base class (Shape)
+        /// </summary>
+        /// <param name="colour">Colour of circle</param>
+        /// <param name="x">x axis position</param>
+        /// <param name="y">y axis position</param>
+        /// <param name="radius">radius value of circle</param>
         public Circle(Color colour, int x, int y, int radius) : base(colour, x, y)
         {
             this.radius = radius; //setting extra property of circle
         }
 
-        public override void set(Color colour, params int[] list)
+        /// <summary>
+        /// Set method to set properties of circle.
+        /// Method expects a colour and int to be passed in.
+        /// </summary>
+        /// <param name="colour"></param>
+        /// <param name="list"></param>
+        public override void Set(Color colour, params int[] list)
         {
-            base.set(colour, list[0], list[1]); //calling shape class setting colour, x, y, radius passing it through list
+            base.Set(colour, list[0], list[1]); //calling shape class setting colour, x, y, radius passing it through list
             this.radius = list[2];
+            this.colour = colour;
         }
 
         /// <summary>
-        /// Draw method to draw shape.
+        /// Draw method to draw circle.
+        /// Draw method requires graphics object and a string (Y/N) for fillFlag, to be passed in.
         /// </summary>
-        /// <param name="g"></param>
-        public override void draw(Graphics g)
+        /// <param name="g">Object that creates canvas for user to draw on.</param>
+        public override void Draw(Graphics g, String fillFlag)
         {
-            Pen p = new Pen(Color.Black, 2); //creates pen object, pen draws border around a shape
-            Brush b = new SolidBrush(colour);  //brush paints the interior of a shape
-            g.FillEllipse(b, x, y, radius * 2, radius * 2);
-            g.DrawEllipse(p, x, y, radius * 2, radius * 2);
+            Pen p = new Pen(colour, 2); // Creates pen object, pen draws border around a shape
+            Brush b = new SolidBrush(colour);  // Brush paints the interior of a shape
+
+            // If fillFlag is equal to N then an outline of a circle will be drawn
+            if (fillFlag == "N")
+            {
+                g.DrawEllipse(p, x, y, radius * 2, radius * 2);
+            }
+
+            // If fillFlag is equal to Y then a solid circle will be drawn
+            if (fillFlag == "Y")
+            {
+                g.FillEllipse(b, x, y, radius * 2, radius * 2);
+            }
+            
         }
 
         /// <summary>
         /// Method to calculate area of circle.
         /// </summary>
-        /// <returns></returns>
-        public override double calcArea()
+        /// <returns>Returns value of area of circle.</returns>
+        public override double CalcArea()
         {
             return Math.PI * (radius ^ 2); 
         }
@@ -56,8 +83,8 @@ namespace ShapeProgramSE4
         /// <summary>
         /// Method to calculate circles perimeter.
         /// </summary>
-        /// <returns></returns>
-        public override double calcPerimeter()
+        /// <returns>Returns value of perimeter of circle.</returns>
+        public override double CalcPerimeter()
         {
             return 2 * Math.PI * radius; 
         }
@@ -65,6 +92,11 @@ namespace ShapeProgramSE4
         public override string ToString()
         {
             return base.ToString() + " " + this.radius;
+        }
+
+        public override void Draw(Graphics g)
+        {
+            throw new NotImplementedException();
         }
     }
 }

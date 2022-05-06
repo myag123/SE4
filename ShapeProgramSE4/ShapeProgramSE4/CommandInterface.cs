@@ -21,14 +21,19 @@ namespace ShapeProgramSE4
         /// Method to set single word commands, not followed by any parameters.
         /// </summary>
         /// <param name="command"></param>
-       // void Set(String command);
-
+        void Set(String command);
+        
+        
+        /// <summary>
+        /// Method to set command followed by string parameters.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="list"></param>
         void Set(String command, String list);
 
         /// <summary>
         /// Depending on result decided whether the next command should be executed
         /// </summary>
-        /// <returns></returns>
         public abstract bool Execute();
 
     }

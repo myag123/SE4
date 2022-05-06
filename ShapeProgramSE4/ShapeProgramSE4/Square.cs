@@ -27,9 +27,9 @@ namespace ShapeProgramSE4
         /// References draw method in Rectangle class 
         /// </summary>
         /// <param name="g"></param>
-        public override void draw(Graphics g)
+        public override void Draw(Graphics g, String fillFlag)
         {
-            base.draw(g);
+            base.Draw(g,fillFlag);
         }
     }
 }

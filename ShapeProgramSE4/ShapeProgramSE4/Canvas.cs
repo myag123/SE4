@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
 namespace ShapeProgramSE4
 {
     /// <summary>
-    /// Canvas class handles the programs drawing system. It will control the Pen's properties and its positions 
+    /// Canvas class handles the programs drawing system. It will control the Pens properties and its positions 
     /// depending on user input. It will also contain all the methods to allow the user to draw a shape. 
     /// </summary>
     public class Canvas
     {
+        // Declaring class variables
         Graphics g;
         int xPos, yPos;
-        Bitmap bm;
-        Pen pen = new Pen(Color.Black, 2);
+        Color bckCol = Color.DeepPink;
+        public Color myCol;
+        public Pen pen = new Pen(Color.Black, 2);
+        public String fillFlag = "";
+        SolidBrush b = new SolidBrush(Color.Black);
 
+        const int origPos = 10; // Constant variable to store original position of pen point
+        
         /* public Canvas()
          { 
 
@@ -29,12 +36,14 @@ namespace ShapeProgramSE4
         public Canvas(Graphics g)
         {
             this.g = g;
-            Pen pen = new Pen(Color.Black, 2); //setting pen colour to black
+            myCol = Color.Black;
+            pen.Color = myCol;
 
-            //position of pen point
-            xPos = 10;
-            yPos = 10;
+            // Setting default position of pen point
+            xPos = origPos;
+            yPos = origPos;
 
+            fillFlag = "N"; // Setting default fillFlag set to off
         }
 
         /// <summary>
@@ -42,64 +51,117 @@ namespace ShapeProgramSE4
         /// </summary>
         /// <param name="toX">x axis position to draw to</param>
         /// <param name="toY">y axis position to draw to</param>
-        public void drawTo(int toX, int toY)
+        public void DrawTo(int toX, int toY)
         {
-            g.DrawLine(pen, xPos, yPos, toX, toY); //draws line between points 
+            g.DrawLine(pen, xPos, yPos, toX, toY); // Draws line between points given
 
-            //updating pens position so pen draws from last position    
+            // Updating pens position so pen draws from last position    
             xPos = toX;
             yPos = toY;
         }
 
-        public void drawSquare(int height, int width)
+        public void DrawString(String msg)
         {
-            // g.DrawRectangle(Pen, xPos, yPos, height, width); needs work!
+            g.Clear(bckCol);
+            g.DrawString(msg, new Font("Arial", 10), b, origPos, origPos);
+        }
+
+        /// <summary>
+        /// Method to draw square to canvas.
+        /// Calls squares set method passing in the current pen color, current x and y position and 
+        /// users given height and width.
+        /// </summary>
+        /// <param name="height">Height value inputted by user</param>
+        /// <param name="width">Width value inputted by user</param>
+        public void DrawSquare(int height, int width)
+        {
             Square square = new Square();
-            Color coll = Color.Black;
-            square.set(coll, xPos, yPos, height, width);
-            square.draw(g);
+            square.Set(myCol, xPos, yPos, height, width);
+            square.Draw(g,fillFlag);
+        }
+
+        /// <summary>
+        /// Method to draw rectangle to canvas.
+        /// Calls rectangles set method passing in the current pen color, current x and y position and 
+        /// users given height and width.
+        /// </summary>
+        /// <param name="height">Height value inputted by user</param>
+        /// <param name="width">Width value inputted by user</param>
+        public void DrawRectangle(int height, int width)
+        {
+            Rectangle rectangle = new Rectangle();
+            rectangle.Set(myCol, xPos, yPos, height, width);
+            rectangle.Draw(g,fillFlag);
         }
 
         /// <summary>
         /// Method that moves the pen point to what the user inputs e.g. moveto 230,150
-        /// The pen will draw from that point onwards.
+        /// This allows the pen to draw from that point onwards.
         /// </summary>
         /// <param name="xPos">x axis position</param>
         /// <param name="yPos">y axis position</param>
-        public void moveTo(int xPos, int yPos)
+        public void MoveTo(int xPos, int yPos)
         {
             this.xPos = xPos;
             this.yPos = yPos;
         }
 
         /// <summary>
-        /// Method to set canvas back to original colour pink - to clear canvas.
+        /// Method to set canvas back to original colour - to clear canvas.
         /// </summary>
         public void Clear()
         {
-            g.Clear(Color.DeepPink);
+            g.Clear(bckCol);
         }
 
-        /*public void drawCircle(int radius)//needs work!!!
+        /// <summary>
+        /// Method to reset pen back to its original points. (top left of canvas)
+        /// </summary>
+        public void Reset()
         {
-            //factory = new ShapeFactory();
-            Color coll = Color.Black;
+            xPos = origPos;
+            yPos = origPos;
+        }
 
+        /// <summary>
+        /// Method to change Pen Colour.
+        /// </summary>
+        /// <param name="color">Color of pen</param>
+        public void PenColour(Color color)
+        {
+            myCol = color;
+            this.pen.Color = myCol;
+            Debug.WriteLine("Color: " + myCol);
+        }
+
+        /// <summary>
+        /// Method to draw circle to canvas.
+        /// Calls circles set method passing in the current pen color, current x and y position and 
+        /// users given radius.
+        /// </summary>
+        /// <param name="radius">Radius value of circle.</param>
+        public void DrawCircle(int radius)
+        {
             Circle circle = new Circle();
-            circle.set(coll, radius);
-            circle.draw(g);
-        }*/
+            circle.Set(myCol, xPos, yPos, radius);
+            circle.Draw(g, fillFlag);
+        }
 
-        public void drawTriangle(int width, int height)
+        /// <summary>
+        /// Method to draw triangle to canvas.
+        /// Calls triangles set method passing in the current pen color, current x and y position and 
+        /// users given height and width.
+        /// </summary>
+        /// <param name="width">Width value inputted by user</param>
+        /// <param name="height">Height value inputted by user</param>
+        public void DrawTriangle(int width, int height)
         {
             //could get the user to input the width and height of the triangle and then get a box
             //to pop up for the user to input values inside such as idk
-            Color coll = Color.Black;
 
             Triangle triangle = new Triangle();
-
-            triangle.set(coll, width, height);
-            triangle.draw(g);
+            triangle.Set(myCol, xPos, yPos, width, height);
+            triangle.Draw(g, fillFlag);
         }
     }
 }

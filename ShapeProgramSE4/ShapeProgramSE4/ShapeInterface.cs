@@ -11,9 +11,9 @@ namespace ShapeProgramSE4
     /// </summary>
     interface ShapeInterface
     {
-        void set(Color c, params int[] list);  
-        public abstract double calcArea();
-        public abstract double calcPerimeter();
+        void Set(Color c, params int[] list);  
+        public abstract double CalcArea();
+        public abstract double CalcPerimeter();
 
     }
 }

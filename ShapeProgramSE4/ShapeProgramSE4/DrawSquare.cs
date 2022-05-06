@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Text;
 
 namespace ShapeProgramSE4
 {
     /// <summary>
-    /// Class for command drawTo.
-    /// Command factory will create an object of this class.
-    /// 
+    /// Class to draw rectangle which extends draw command.
     /// </summary>
-    class DrawTo : DrawCommand
+    class DrawSquare : DrawCommand
     {
-        private int xPos, yPos;
+        private int xPos, yPos, width, height;
 
         /// <summary>
         /// Method to get and set x axis position.
         /// </summary>
-        public int XPos 
+        public int XPos
         {
             get => xPos;
             set => xPos = value;
@@ -34,24 +31,21 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Constructor method for DrawTo
+        /// Method to get and set width of square.
         /// </summary>
-        public DrawTo()
+        public int Width
         {
-
+            get => width;
+            set => width = value;
         }
 
         /// <summary>
-        /// Method to draw line to canvas using values of x axis and y axis
+        /// Method to get and set height of square.
         /// </summary>
-        /// <param name="c">Canvas object that pen will draw line between axis coordinates given</param>
-        /// <param name="x">x axis position</param>
-        /// <param name="y">y axis positon</param>
-        public DrawTo(Canvas c, int x, int y) : base(c)
+        public int Height
         {
-            Name = "drawto";
-            this.xPos = x;
-            this.yPos = y;
+            get => height;
+            set => height = value;
         }
 
         /// <summary>
@@ -59,7 +53,7 @@ namespace ShapeProgramSE4
         /// </summary>
         /// <param name="Parameters">String of parameters.</param>
         /// <param name="ParamsInt">Output for integer array.</param>
-        public override void ProcessParameters(String Parameters, out int[] ParamsInt)
+        public override void ProcessParameters(string Parameters, out int[] ParamsInt)
         {
             String[] processor;
             if (Parameters == null)
@@ -69,14 +63,14 @@ namespace ShapeProgramSE4
 
             if (!Parameters.Contains(","))
             {
-                throw new GPLException("\n Unable to process DrawTo parameters due to syntax error.");
-            }    
+                throw new GPLException("\n Unable to process Square parameters due to syntax error.");
+            }
 
             processor = Parameters.Split(",");
 
             if (processor[1] == "")
             {
-                throw new GPLException("\n Unable to process DrawTo parameters due to syntax error.");
+                throw new GPLException("\n Unable to process Square parameters due to syntax error.");
             }
             else
             {
@@ -86,30 +80,30 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Method to ensure parameter list for drawto command contains no less than 2 parameters.
+        /// Method to ensure parameter list for drawSquare command contains no less than 2 parameters.
         /// </summary>
+        /// <param name="ParameterList"></param>
         public override void ParseParameters(int[] parameterList)
         {
             if (parameterList.Length != 2)
             {
-                throw new GPLException("Invalid number of parameters in DrawTo"); // Exception thrown if incorrect number of parameters are inputted
+                throw new ApplicationException("Invalid number of parameters in DrawSquare."); // Exception thrown if incorrect number of parameters are inputted
             }
         }
 
         /// <summary>
-        /// Set method for DrawTo.
-        /// Method requires canvas object, command name and x and y axis values.
-        /// </summary>
+        /// Set method for DrawSquare
+        /// Method requires canvas object, command name andheight and width values.
         /// <param name="c">Canvas object</param>
         /// <param name="Name">Command name</param>
-        /// <param name="Parameters">x and y axis values</param>
+        /// <param name="Parameters">height and width values</param>
         public void Set(Canvas c, String Name, String Parameters)
         {
-            base.Set(c, "drawto", Parameters); 
+            base.Set(c, "square", Parameters);
             this.ProcessParameters(Parameters, out int[] ParamsInt);
             this.ParseParameters(ParamsInt);
-            this.xPos = ParamsInt[0];
-            this.yPos = ParamsInt[1];
+            this.width = ParamsInt[0];
+            this.height = ParamsInt[1];
         }
 
         /// <summary>
@@ -118,12 +112,16 @@ namespace ShapeProgramSE4
         /// <returns>Returns name of class and inputted parameters.</returns>
         public override string ToString()
         {
-            return base.ToString() + "DrawTo" + this.xPos + " " + this.yPos;
+            return base.ToString() + "DrawSquare" + this.xPos + " " + this.yPos;
         }
 
+        /// <summary>
+        /// Execute method for DrawSquare to draw Square to canvas with inputted values.
+        /// </summary>
+        /// <returns>Returns true boolean value.</returns>
         public override bool Execute()
         {
-            c.DrawTo(xPos, yPos); //does the actual draw to the canvas class
+            c.DrawSquare(width, height); //does the actual draw to the canvas class
             return true;
         }
 

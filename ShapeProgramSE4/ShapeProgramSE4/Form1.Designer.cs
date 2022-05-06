@@ -33,7 +33,7 @@
             this.btnRun = new System.Windows.Forms.Button();
             this.lbl1 = new System.Windows.Forms.Label();
             this.lbl2 = new System.Windows.Forms.Label();
-            this.lbl3ErrorMsg = new System.Windows.Forms.Label();
+            this.lblOutputMsg = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSaveBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripLoadBtn = new System.Windows.Forms.ToolStripButton();
@@ -44,6 +44,7 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.richTxtCmdLine = new System.Windows.Forms.RichTextBox();
             this.richTxtCmdBox = new System.Windows.Forms.RichTextBox();
+            this.btnPenCol = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.canvasBox)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -66,7 +67,7 @@
             this.btnRun.TabIndex = 2;
             this.btnRun.Text = "Run";
             this.btnRun.UseVisualStyleBackColor = true;
-            this.btnRun.Click += new System.EventHandler(this.button1_Click);
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
             // lbl1
             // 
@@ -75,7 +76,7 @@
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(195, 20);
             this.lbl1.TabIndex = 3;
-            this.lbl1.Text = "Enter your command below:";
+            this.lbl1.Text = "Paste your command below:";
             // 
             // lbl2
             // 
@@ -86,14 +87,14 @@
             this.lbl2.TabIndex = 6;
             this.lbl2.Text = "Enter your short command below:";
             // 
-            // lbl3ErrorMsg
+            // lblOutputMsg
             // 
-            this.lbl3ErrorMsg.AutoSize = true;
-            this.lbl3ErrorMsg.Location = new System.Drawing.Point(476, 578);
-            this.lbl3ErrorMsg.Name = "lbl3ErrorMsg";
-            this.lbl3ErrorMsg.Size = new System.Drawing.Size(79, 20);
-            this.lbl3ErrorMsg.TabIndex = 7;
-            this.lbl3ErrorMsg.Text = "ResultMSg";
+            this.lblOutputMsg.AutoSize = true;
+            this.lblOutputMsg.Location = new System.Drawing.Point(476, 576);
+            this.lblOutputMsg.Name = "lblOutputMsg";
+            this.lblOutputMsg.Size = new System.Drawing.Size(136, 20);
+            this.lblOutputMsg.TabIndex = 7;
+            this.lblOutputMsg.Text = "No errors reported.";
             // 
             // toolStrip1
             // 
@@ -118,6 +119,7 @@
             this.toolStripSaveBtn.Name = "toolStripSaveBtn";
             this.toolStripSaveBtn.Size = new System.Drawing.Size(29, 24);
             this.toolStripSaveBtn.Text = "Save";
+            this.toolStripSaveBtn.Click += new System.EventHandler(this.toolStripSaveBtn_Click);
             // 
             // toolStripLoadBtn
             // 
@@ -127,6 +129,7 @@
             this.toolStripLoadBtn.Name = "toolStripLoadBtn";
             this.toolStripLoadBtn.Size = new System.Drawing.Size(29, 24);
             this.toolStripLoadBtn.Text = "Load Project";
+            this.toolStripLoadBtn.Click += new System.EventHandler(this.toolStripLoadBtn_Click);
             // 
             // toolStripHelpBtn
             // 
@@ -195,20 +198,30 @@
             this.richTxtCmdBox.TabIndex = 14;
             this.richTxtCmdBox.Text = "";
             this.richTxtCmdBox.TextChanged += new System.EventHandler(this.richTxtCmdBox_TextChanged);
-            this.richTxtCmdBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTxtCmdBox_KeyDown);
+            // 
+            // btnPenCol
+            // 
+            this.btnPenCol.Location = new System.Drawing.Point(476, 611);
+            this.btnPenCol.Name = "btnPenCol";
+            this.btnPenCol.Size = new System.Drawing.Size(94, 29);
+            this.btnPenCol.TabIndex = 15;
+            this.btnPenCol.Text = "Pen Color";
+            this.btnPenCol.UseVisualStyleBackColor = true;
+            this.btnPenCol.Click += new System.EventHandler(this.btnPenCol_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(997, 661);
+            this.Controls.Add(this.btnPenCol);
             this.Controls.Add(this.richTxtCmdBox);
             this.Controls.Add(this.richTxtCmdLine);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.lblHeader);
             this.Controls.Add(this.btnVldte);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.lbl3ErrorMsg);
+            this.Controls.Add(this.lblOutputMsg);
             this.Controls.Add(this.lbl2);
             this.Controls.Add(this.lbl1);
             this.Controls.Add(this.btnRun);
@@ -229,7 +242,7 @@
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Label lbl1;
         private System.Windows.Forms.Label lbl2;
-        private System.Windows.Forms.Label lbl3ErrorMsg;
+        private System.Windows.Forms.Label lblOutputMsg;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripSaveBtn;
         private System.Windows.Forms.ToolStripButton toolStripLoadBtn;
@@ -240,6 +253,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.RichTextBox richTxtCmdLine;
         private System.Windows.Forms.RichTextBox richTxtCmdBox;
+        private System.Windows.Forms.Button btnPenCol;
     }
 }
 

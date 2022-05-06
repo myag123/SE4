@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ShapeProgramSE4
@@ -11,9 +12,10 @@ namespace ShapeProgramSE4
     /// </summary>
     public abstract class Command : CommandInterface
     {
-        //all commands require a name followed by a list of parameters e.g. MoveTo 100,130
         private String name = "";
         private String parameterList;
+        private String expression;
+        private int varValue;
 
         protected Command()
         { 
@@ -38,6 +40,25 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
+        /// Expression e.g. = + - *
+        /// For commands such as variables.
+        /// </summary>
+        public String Expression
+        {
+            get { return Expression; }
+        }
+
+        /// <summary>
+        /// Return value of variable
+        /// </summary>
+        public int VarValue
+        {
+            get { return VarValue; }
+            set { VarValue = value; }
+        }
+
+
+        /// <summary>
         /// Abstract method to Execute.
         /// All commands must have an execute method, which will be overriden in classes that inherit this.
         /// </summary>
@@ -57,5 +78,21 @@ namespace ShapeProgramSE4
             this.name = name;
             this.parameterList = ParameterList;
         }
+
+        /// <summary>
+        /// Set method for short commands that don't require parameters.
+        /// </summary>
+        /// <param name="name">Command name</param>
+        public void Set(String name)
+        {
+            this.name = name;
+        }
+
+        public void Set(String name, int varValue)
+        {
+            this.name = name;
+            this.varValue = varValue;
+        }
+
     }
 }
