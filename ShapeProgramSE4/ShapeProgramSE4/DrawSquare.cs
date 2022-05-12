@@ -72,9 +72,13 @@ namespace ShapeProgramSE4
             {
                 throw new GPLException("\n Unable to process Square parameters due to syntax error.");
             }
+            if(!processor[0].Contains(processor[1]))
+            {
+                throw new GPLException("Square must contain same value of width and height");
+            }
             else
             {
-                Array.ConvertAll(processor, s => int.Parse(s));
+                Array.ConvertAll(processor, s => int.Parse(s)); // Converts array to int
                 ParamsInt = Array.ConvertAll(processor, s => int.Parse(s));
             }
         }

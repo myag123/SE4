@@ -19,7 +19,10 @@ namespace ShapeProgramSE4
           circle 50
          endmethod
         mymethod -- to call method
-        working without added in parameters*/
+        working without added in parameters
+        think abut this 
+        get the prgram to look for the methodname and then save everything on the line inside the method 
+        */
         public override bool Execute()
         {
             throw new NotImplementedException();

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Collections;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace ShapeProgramSE4
 {
@@ -17,13 +18,23 @@ namespace ShapeProgramSE4
     class Parser
     {
         String[] splitter; //array string to split up command 
-        String name, coords, colour, command, expression;
-        int value, varCounter = 0;
+        String name, coords, colour, command, expression, exists;
+        String varChk = "";
+        int value, varCounter = 0, varChkCounter = 0, methodCounter = 0;
         ArrayList varNameList = new ArrayList();
         ArrayList varValueList = new ArrayList();
+        ArrayList varChkNameList = new ArrayList();
+        ArrayList varChkValueList = new ArrayList();
+
+        Regex regexInt = new Regex(@"[\d]"); // Creating regular expression for numbers only
+        Regex regexLetters = new Regex(@"^[a-zA-Z]+$"); // Creating regular expression for letters only
+
+        bool valid;
+
 
         CommandFactory CommFactory = new CommandFactory();
         Canvas canvas;
+        CodeChecker validator = new CodeChecker();
 
         /// <summary>
         /// Constructor for parser class requires Canvas to be passed in.
@@ -34,157 +45,297 @@ namespace ShapeProgramSE4
            canvas = c;
         }
 
-
-        public void CheckCommands(String Command, String Parameters, bool result)
-        {
-                if (Command.Contains("drawto") && Parameters.Contains(","))
-                {
-                    String[] pCheck = Parameters.Split(",");
-                    int p1 = Int32.Parse(pCheck[0]);
-                    int p2 = Int32.Parse(pCheck[1]);
-                    result = true;
-                }
-
-        }
-
         /// <summary>
         /// Command method to ParseCommand from inputted lines of code from the user.
         /// </summary>
         /// <param name="command">Command parameter e.g. MoveTo 100,200</param>
-        /// <param name="execute">Boolean True/False</param>
+        /// <param name="execute">Execute flag, if true code will be executed, if false code will not be executed </param>
         /// <returns>Returns true if successful and false if failed.</returns>
         public Command ParseCommand(String line, bool execute)
         {
-            splitter = line.Split(" "); // Split up user input by space drawto 100,150 .. drawto||100,150
-
-            if(line.Length == 0) // If user enters in blank line, then exception is thrown
-            {
-                throw new GPLException("Please enter a command. \nCommand was blank.");
-            }
-
-            command = splitter[0]; // Setting 1st position of array to equal command variable, for if statements below
-            
-
-            for (int i = 0; i < splitter.Length;) // Loop until index is less than length of splitter array
-            {
-                Debug.WriteLine(splitter[i]);
-                i++;
-            }
-
             try
             {
-                // If user declares full variable e.g. var apple = 40
-                if (command.Equals("var") == true && splitter.Length.Equals(4) == true) 
+                if (line.Length == 0) // If user enters in blank line, then exception is thrown
                 {
-                    Var varCommand = (Var)CommFactory.MakeCommand("var"); // Creating object of Var class
+                    // throw new GPLException("Please enter a command. \nCommand was blank.");
+                    //canvas.DrawString("Please enter a command. \nCommand was blank.");
+                    Debug.WriteLine("blank");
+                }
+            
 
-                    name = splitter[1].ToString(); 
+            splitter = line.Split(" "); // Split up user input by space drawto 100,150 .. drawto||100,150
+            command = splitter[0]; // Setting first  position of array to equal command variable, for if statements below
+            Var varCommand = (Var)CommFactory.MakeCommand("var"); // Creating object of Var class
+
+                for (int i = 0; i < splitter.Length;) // Loop until index is less than length of splitter array
+                {
+                    Debug.WriteLine(splitter[i]);
+                    i++;
+                }
+         
+                if (command.Equals("mymethod") == true)
+                {
+
+                }
+                if (command.Equals("reset") == true && execute == false || command.Equals("clear") == true && execute == false) // If command equals reset or clear and execute is false
+                {
+                    validator.drawShrtCmdRules(command.Trim(), out valid); // Command is passed to codechecker for validation
+                    if (valid == true) { throw new GPLException(""); } // If codechecker class method returns true then exception is cleared from screen
+                    if (valid == false) { throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
+                }
+                // If execute is false and command is passed to drawShrtCmdRules for validation on short commands
+                 if (execute == false && command.Equals("drawto") == true || execute == false && command.Equals("moveto") == true || execute == false && command.Equals("square") == true
+                        || execute == false && command.Equals("triangle") == true || execute == false && command.Equals("pen") == true || execute == false && command.Equals("fill") == true || execute == false && command.Equals("rectangle") == true)
+                 {
+                    validator.drawCmdRules(command.Trim(), splitter[1], out valid);  // Command is passed to drawCmdRules for validation on draw commands
+
+                    if (valid == false) // If codechecker class method returns false then exception is thrown
+                    { throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code."); }
+
+                    if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                    { throw new GPLException(""); }
+                 }
+                if (command.Equals("var") == true && splitter.Length.Equals(4) == true) // If user declares full variable e.g. var apple = 40
+                {
+                    name = splitter[1].ToString();
                     value = Int32.Parse(splitter[3]);
 
-                    if (varCommand.varNameList.Contains(name)) // Check to see if variable name exists, if so execption is thrown
+                    if (execute == true)
                     {
-                        throw new GPLException("Variable " + name + " already exists. \nPlease declare a different named variable");
+                        foreach (string item in varCommand.varNameList) // Loop to search each string in array
+                        {
+                            if (item.Contains(name)) // If name of variable is found in array during execution then exception is thrown
+                            {
+                                exists = "Y";
+                                throw new GPLException("Error! Variable " + name + " already exists.");
+                            }
+                        }
+                            if (execute == true && exists != "Y") // If execute is true parameters are passed to Var class
+                            {
+                                varCommand.Set(name, value);             // Passing name and value to var class
+                                varCommand.varNameList.Add(name);        // Adding name and value of declared variable to array lists
+                                varCommand.varValueList.Add(value);
+
+                                varCommand.varNameList[varCounter] = name; // Storing position of name and value in array lists
+                                varCommand.varValueList[varCounter] = value;
+                                varCounter++; // Increasing counter for next variable
+                                varCommand.Execute();
+                            }
                     }
-                    else
+                    if (execute == false) // If execute is false parameters are passed to CodeChecker class to be validated
                     {
-                        varCommand.Set(name, value); // Passing name and value to var class
+                        foreach (string item in varChkNameList) // Loop to search each string in array
+                        {
+                            if (item.Contains(name)) // If name of variable is found in array outside execution then exception is thrown
+                            {
+                                validator.exists = "Y"; // Sets exists string to Y if variable exists 
+                                //throw new GPLException("Variable " + name + " already exists. \nPlease declare a different named variable");
+                            }
+                        }
 
-                        // Adding name and value of declared variable to array lists
-                        varNameList.Add(name);
-                        varValueList.Add(value);
+                        if (validator.exists != "Y")
+                        {
+                            varChkNameList.Add(name);        // Adding name and value of declared variable to array lists
+                            varChkValueList.Add(value);
 
-                        // Storing position of name and value in array lists
-                        varNameList[varCounter] = name;
-                        varValueList[varCounter] = value;
-                        varCounter++; // Increasing counter for next variable
-                        
-                        if (execute == true) { varCommand.Execute(); }
+                            varChkNameList[varChkCounter] = name; // Storing position of name and value in array lists
+                            varChkValueList[varChkCounter] = value;
+                            varChkCounter++; // Increasing counter for next variable
+                            varChk = "Y";
+                            validator.DeclareVar(command, name, value, out valid);
+
+                            if (valid == false) // If codechecker class method returns false then exception is thrown
+                            {
+                                throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code.");
+                            }
+                            /*if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                            {
+                                throw new GPLException("");
+                            }*/
+                        }
                     }
-                }
+                } // End of if user declares full variable 
 
-                // If user declares variable without setting value e.g. var apple
-                if (command.Equals("var") == true && splitter.Length.Equals(2) == true) 
+                if (splitter[0].Equals("var") == true && splitter.Length.Equals(2) == true) // If user declares variable without setting value e.g. var apple
                 {
-                    Var varCommand = (Var)CommFactory.MakeCommand("var"); 
-
                     name = splitter[1].ToString();
-                    value = 0; // Initialising variable declared so it isnt null
+                    value = 0;
 
-                    if (varNameList.Contains(name)) // Check to see if variable name exists.
+                    foreach (string item in varCommand.varNameList) // Loop to search each string in array
                     {
-                        throw new GPLException("Variable " + name + " already exists. \nPlease declare a different named variable");
+                        if (item.Contains(name)) // If name of variable is found in array during execution then exception is thrown
+                        {
+                            if (execute == true)
+                            {
+                                throw new GPLException("Error! Variable " + name + " already exists.");
+                            }
+                        }
                     }
-                    else
-                    {
-                        varCommand.Set(name, value); // Passing name and value to var class
-                        
-                        // Adding name and value of declared variable to array lists
-                        varNameList.Add(name);
-                        varValueList.Add(value);
 
-                        // Storing position of name and value in array lists
-                        varNameList[varCounter] = name;
-                        varValueList[varCounter] = value;
+                    foreach (string item in varChkNameList) // Loop to search each string in array
+                    {
+                        if (item.Contains(name)) // If name of variable is found in array outside execution then exception is thrown
+                        {
+                            if (execute == false)
+                            {
+                                validator.exists = "Y"; // Sets exists string to Y if variable exists 
+                                throw new GPLException("Variable " + name + " already exists. \nPlease declare a different named variable");
+                            }
+                        }
+                    }
+
+                    if (execute == true)
+                    {
+                        varCommand.Set(name, value);  // Passing name and value to var class
+                        varCommand.varNameList.Add(name);        // Adding name and value of declared variable to array lists
+                        varCommand.varValueList.Add(value);
+
+                        varCommand.varNameList[varCounter] = name; // Storing position of name and value in array lists
+                        varCommand.varValueList[varCounter] = value;
                         varCounter++; // Increasing counter for next variable
-
-                        if (execute == true) { varCommand.Execute(); }
+                        varCommand.Execute();
                     }
 
-                }
+                    if (execute == false)
+                    {
+                        varChkNameList.Add(name);        // Adding name and value of declared variable to array lists
+                        varChkValueList.Add(value);
 
-                // If user sets value of variable after it has been declared e.g. apple = 50 || apple = 50 * 5
-                if (varNameList.Contains(splitter[0]) == true) 
+                        varChkNameList[varChkCounter] = name; // Storing position of name and value in array lists
+                        varChkValueList[varChkCounter] = value;
+                        varChkCounter++; // Increasing counter for next variable
+                        varChk = "Y";
+                        validator.DeclareVar(command, name, value, out valid);
+
+                        if (valid == false) // If codechecker class method returns false then exception is thrown
+                        {
+                            throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code.");
+                        }
+                        if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                        {
+                            throw new GPLException("");
+                        }
+                    }
+                } // End of if user declares variable without setting value
+
+                if (splitter[1].Equals("=") == true && splitter.Length.Equals(3))  // If user sets the value of variable to a different number e.g. apple = 50 (after declaration)
                 {
-                    Debug.WriteLine("var found " + splitter[0].ToString()); // For debugger
+                    int position;
+                    Debug.WriteLine("var " + splitter[0].ToString() + " length of var = 3");
 
-                    int position, length;
-                    Var varCommand = (Var)CommFactory.MakeCommand("var");
+                    name = splitter[0].ToString();
+                    value = Int32.Parse(splitter[2]);
 
-                    length = splitter.Length; // Getting length of splitter array
-
-                    // If user sets the value of variable to a different number e.g. apple = 50
-                    if (splitter[1].Equals("=") && length.Equals(3))
+                    foreach (string item in varCommand.varNameList) // Loop to search each string in array
                     {
-                        Debug.WriteLine("var " + splitter[0].ToString() + " length of var = 3");
+                        if (execute == true) // If name of variable is found in array during execution then exception is thrown
+                        {
+                            if (item.Contains(name))
+                            {
+                                position = varCommand.varNameList.IndexOf(splitter[0]); // Finds the position of the inputted variable
+                                varCommand.varValueList[position] = splitter[2];  // Sets the value of the variable in array list
 
-                        name = splitter[0].ToString();
-                        value = Int32.Parse(splitter[2]);
-
-                        position = varNameList.IndexOf(splitter[0]); // Finds the position of the inputted variable
-                        varValueList[position] = splitter[2];  // Sets the value of the variable in array list
-
-                        varCommand.SetName(name);
-                        varCommand.SetValue(value);
-
-                        if (execute == true) { varCommand.Execute(); }
+                                varCommand.SetName(name);
+                                varCommand.SetValue(value);
+                                varCommand.Execute();
+                            }
+                            else if (!item.Contains(name))
+                            {
+                                throw new GPLException("Cannot find variable " + name + "\n Please declare variable before it is set.");
+                            }
+                        }
                     }
-                    else if (splitter[1].Equals("=") == true && length > 3) // If user sets value of a variable by calculation e.g. apple = 50 * 5
+
+                    foreach (string item in varChkNameList) // Loop to search each string in array
                     {
-                        Debug.WriteLine("var " + splitter[0].ToString() + " length of var more than 3");
+                        if (execute == false) // If name of variable is found in array outside execution then exception is thrown
+                        {
+                            if (item.Contains(name))
+                            {
+                                varChk = "Y";
+                                position = varChkNameList.IndexOf(splitter[0]); // Finds the position of the inputted variable
+                                varChkValueList[position] = splitter[2];  // Sets the value of the variable in array list
+                                validator.SetDeclaredVar(name, value, out valid);
 
-                        name = splitter[0];
-
-                        length = length - 2; // Minusing 2 from length to start from equals sign of splitter array
-
-                        ArraySegment<string> arrGetCalc = new ArraySegment<string>(splitter, 2, length); // Gets the contents of array after = sign to work out calculation
-                        
-                        CalculateArrayVal(splitter[0], arrGetCalc, out int result); // Passes calculation to CalculateArrayVal method and returns sum of calculation
-                        position = varNameList.IndexOf(splitter[0]); // Finds the position of the inputted variable
-                        varValueList[position] = result;  // Sets the value of the variable in array list
-                        value = result;
-
-                        varCommand.SetName(name);
-                        varCommand.SetValue(value);
-                        Debug.WriteLine("var " + splitter[0].ToString() + " new calculation = " + result);
-
-                        if (execute == true) { varCommand.Execute(); }
+                                if (valid == false) // If codechecker class method returns false then exception is thrown
+                                {
+                                    throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code.");
+                                }
+                                if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                                {
+                                    throw new GPLException("");
+                                }
+                            }
+                            else if (!item.Contains(name))
+                            {
+                                throw new GPLException("Cannot find variable " + name + "\n Please declare variable before it is set.");
+                            }
+                        }
                     }
-                    else
+                } // End of if user sets the value of variable to a different number
+
+                if (splitter[1].Equals("=") == true && splitter.Length > 3) // If user sets value of a variable by calculation e.g. apple = 50 * 5
+                {
+                    Debug.WriteLine("var " + splitter[0].ToString() + " length of var more than 3");
+                    name = splitter[0];
+                    int position, length = splitter.Length;
+                    length = length - 2; // Minusing 2 from length to start from equals sign of splitter array
+                    ArraySegment<string> arrGetCalc = new ArraySegment<string>(splitter, 2, length); // Gets the contents of array after = sign to work out calculation
+
+                    foreach (string item in varCommand.varNameList) // Loop to search each string in array
                     {
-                        throw new GPLException("Invalid syntax to set variable");
+                        if (execute == true) // If name of variable is found in array during execution then exception is thrown
+                        {
+                            if (item.Contains(name))
+                            {
+                                CalculateArrayVal(name, arrGetCalc, out int result); // Passes calculation to CalculateArrayVal method and returns sum of calculation
+                                position = varCommand.varNameList.IndexOf(name); // Finds the position of the inputted variable
+                                varCommand.varValueList[position] = result;  // Sets the value of the variable in array list
+                                value = result;
+                                varCommand.SetName(name);
+                                varCommand.SetValue(value);
+                                varCommand.Execute();
+                                Debug.WriteLine("var " + splitter[0].ToString() + " new calculation = " + value);
+                            }
+                            else if (!item.Contains(name))
+                            {
+                                throw new GPLException("Cannot find variable " + name + "\n Please declare variable before it is set.");
+                            }
+                        }
+                    }
+
+                    foreach (string item in varChkNameList) // Loop to search each string in array
+                    {
+                        if (execute == false)  // If name of variable is found in array outside execution then exception is thrown
+                        {
+                            if (item.Contains(name))
+                            {
+                                varChk = "Y";
+                                CalculateArrayVal(name, arrGetCalc, out int result); // Passes calculation to CalculateArrayVal method and returns sum of calculation
+                                position = varChkNameList.IndexOf(name); // Finds the position of the inputted variable
+                                varChkValueList[position] = result;  // Sets the value of the variable in array list
+                                value = result;
+                                validator.SetDeclaredVar(name, value, out valid);
+                                Debug.WriteLine("var " + splitter[0].ToString() + " new calculation = " + value);
+
+                                if (valid == false) // If codechecker class method returns false then exception is thrown
+                                {
+                                    throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code.");
+                                }
+                                if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                                {
+                                    throw new GPLException("");
+                                }
+                            }
+                            else if (!item.Contains(name))
+                            {
+                                throw new GPLException("Cannot find variable " + name + "\n Please declare variable before it is set.");
+                            }
+                        }
                     }
                 }
-                else if (command.Equals("drawto") == true) //if command equals drawto then command is split into arrays and passed to drawto class
+
+                if (command.Equals("drawto") == true) //if command equals drawto then command is split into arrays and passed to drawto class
                 {
                     DrawTo dtCommand = (DrawTo)CommFactory.MakeCommand("drawto"); //creating drawto command from factory class
                     name = splitter[0].ToString();
@@ -194,6 +345,7 @@ namespace ShapeProgramSE4
 
                     dtCommand.Set(canvas, name, coords); //calling set method of DrawTo class to draw on canavs
                     if (execute == true) { dtCommand.Execute(); return dtCommand; } //if execute method returns true then return command
+                   
                 }
                 else if (command.Equals("moveto") == true)
                 {
@@ -230,28 +382,92 @@ namespace ShapeProgramSE4
                     penCommand.Set(canvas, name, mycol);
                     if (execute == true) { penCommand.Execute(); return penCommand; }
                 }
-                else if (command.Equals("circle"))
+                else if (command.Equals("circle") == true)// && execute == true) //REMOVE THIS MORNING
                 {
                     DrawCircle c = (DrawCircle)CommFactory.MakeCommand("circle");
-
                     name = splitter[0].ToString();
                     coords = splitter[1].ToString();
-                    if (varNameList.Contains(coords) == true)
+                    int position;
+                    string result;
+
+                    if (execute == true && regexLetters.IsMatch(coords) == true) // If execute is true and coords contain letters
                     {
-                        int position;
-                        string result;
-
-                        position = varNameList.IndexOf(coords); // Finds the position of the inputted variable
-                        result = varValueList[position].ToString();
-
-                        c.Set(canvas, name, result);
+                      //  foreach (string item in varCommand.varNameList) // Checks if coords exists in array
+                        //{
+                            //if (item.Contains(coords)) // If variable is found in array then circle parameters are set
+                            //if (varCommand.varNameList.Contains(coords) == true)
+                           // {
+                                position = varCommand.varNameList.IndexOf(coords); // Finds the position of the inputted variable
+                                result = varCommand.varValueList[position].ToString();
+                                c.Set(canvas, name, result);
+                                c.Execute(); return c;
+                            }
+                           // else
+                           // {
+                             //   throw new GPLException("Invalid variable."); // Else exception is thrown
+                            //}
+                     //   }
+                 //   }
+                     if (execute == true && regexInt.IsMatch(coords)) // If execute is true and coords contain numbers
+                    {
+                        c.Set(canvas, name, coords);
+                        c.Execute(); return c;
                     }
-                    else { c.Set(canvas, name, coords); }
+                    if (execute == false && regexLetters.IsMatch(coords))
+                    {
+                        foreach (string item in varChkNameList) // Checks if coords exists in array
+                        {
+                            if (item.Contains(coords)) // If variable is found in array then circle parameters are set
+                            {
+                                position = varChkNameList.IndexOf(coords); // Finds the position of the inputted variable
+                                result = varChkValueList[position].ToString();
+                                validator.drawCmdRules(command, result, out bool valid);
+
+                                if (valid == false) // If codechecker class method returns false then exception is thrown
+                                {
+                                    throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code.");
+                                }
+                                if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                                {
+                                    throw new GPLException("");
+                                }
+                            }
+                            else
+                            {
+                                throw new GPLException("Invalid variable."); // Else exception is thrown
+                            }
+                        }
+                    }
+                    if (execute == false && regexInt.IsMatch(coords))
+                    {
+                        foreach (string item in varChkNameList) // Checks if coords exists in array
+                        {
+                            if (item.Contains(coords)) // If variable is found in array then circle parameters are set
+                            {
+                                position = varChkNameList.IndexOf(coords); // Finds the position of the inputted variable
+                                result = varChkValueList[position].ToString();
+                                validator.drawCmdRules(command, result, out bool valid);
+                                if (valid == false) // If codechecker class method returns false then exception is thrown
+                                {
+                                    throw new GPLException("Invalid syntax for " + command + "\n Please correct before running code.");
+                                }
+                                if (valid == true) // If codechecker class method returns true then exception is cleared from screen
+                                {
+                                    throw new GPLException("");
+                                }
+                            }
+                           /* else
+                            {
+                                throw new GPLException("Invalid variable."); // Else exception is thrown
+                            }*/
+                        }
+                    }
+                 //   else { c.Set(canvas, name, coords); }
                     // try { coords = splitter[1].ToString(); } catch (IndexOutOfRangeException ex) { canvas.DrawString(ex.Message); }
 
                     //if (coords == null) { throw new GPLException("No coordinates for Circle."); }
                     //if (coords.Contains(",")||coords.Contains(" ")) { throw new GPLException("Invalid number of parameters for Circle."); }
-                    if (execute == true) { c.Execute(); return c; }
+                //    if (execute == true) { }
                 }
                 else if (command.Equals("rectangle"))
                 {
@@ -266,7 +482,7 @@ namespace ShapeProgramSE4
                 { //could also just reference draw rectangle then to reduce the need for extra class 
                     DrawSquare s = (DrawSquare)CommFactory.MakeCommand("square");
                     name = splitter[0].ToString();
-                    if (coords == null) { throw new GPLException("No coordinates for Square."); }
+                  //  if (coords == null) { throw new GPLException("No coordinates for Square."); }
 
                     coords = splitter[1].ToString();
                     s.Set(canvas, name, coords);
@@ -276,7 +492,7 @@ namespace ShapeProgramSE4
                 {
                     DrawTriangle t = (DrawTriangle)CommFactory.MakeCommand("triangle");
                     name = splitter[0].ToString();
-                    if (coords == null) { throw new GPLException("No coordinates for Triangle."); }
+                 //   if (coords == null) { throw new GPLException("No coordinates for Triangle."); }
                     coords = splitter[1].ToString();
                     t.Set(canvas, name, coords);
                     if (execute == true) { t.Execute(); return t; }
@@ -290,21 +506,24 @@ namespace ShapeProgramSE4
                      coords = splitter[1].ToString(); f.Set(canvas, name, coords);
                     if (execute == true) { f.Execute(); return f; }
                 }
-                else if (command.Equals(""))
+              /*  else if (command.Equals(""))
                 {
                     throw new GPLException("No code to run.");
-                }
-               /* else if()
-                {
-                    throw new GPLException("Invalid command: " + command);
                 }*/
+            }
+           /* catch (GPLException ex)
+            {
+                canvas.DrawString(ex.Message);
+            }*/
+            catch (IndexOutOfRangeException ex)
+            {
+                canvas.DrawString(ex.Message);
             }
             catch (GPLException ex)
             {
                 canvas.DrawString(ex.Message);
             }
-
-                return null;
+               return null;
             }
 
         /// <summary>

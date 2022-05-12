@@ -14,6 +14,15 @@ namespace ShapeProgramSE4
         String name, status;
 
         /// <summary>
+        /// Method to get and set status of fill command.
+        /// </summary>
+        public string Status
+        {
+            get => status;
+            set => status = value;
+        }
+
+        /// <summary>
         /// Construtor for fill class.
         /// </summary>
         public Fill()

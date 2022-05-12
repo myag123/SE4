@@ -46,13 +46,20 @@ namespace ShapeProgramSE4
         /// <param name="ParamsInt">Output for integer array.</param>
         public override void ProcessParameters(String parameters, out int ParamsInt)
         {
-            //exception needs to be handles here plesae reaserch
 
-            ParamsInt = Int32.Parse(parameters);
+            try
+            {
+                ParamsInt = Int32.Parse(parameters);
+            }
+            catch (FormatException ex)
+            {
+                ex.ToString();
+                throw new GPLException("Invalid number of parameters for circle.");
+            }
         }
 
         /// <summary>
-        /// Method to ....
+        /// Method to set and process parameters to draw circle.
         /// </summary>
         /// <param name="c">Canvas object</param>
         /// <param name="Name">Command name</param>

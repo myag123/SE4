@@ -112,6 +112,7 @@ namespace ShapeProgramSE4
         public void Clear()
         {
             g.Clear(bckCol);
+            //DrawString(" ");
         }
 
         /// <summary>
@@ -160,6 +161,7 @@ namespace ShapeProgramSE4
             //to pop up for the user to input values inside such as idk
 
             Triangle triangle = new Triangle();
+
             triangle.Set(myCol, xPos, yPos, width, height);
             triangle.Draw(g, fillFlag);
         }

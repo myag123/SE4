@@ -14,7 +14,6 @@ namespace ShapeProgramSE4
     {
         private String name = "";
         private String parameterList;
-        private String expression;
         private int varValue;
 
         protected Command()
