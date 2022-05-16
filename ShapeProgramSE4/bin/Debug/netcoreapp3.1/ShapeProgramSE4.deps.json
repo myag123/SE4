@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "ShapeProgramSE4/1.0.0": {
+        "runtime": {
+          "ShapeProgramSE4.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ShapeProgramSE4/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
