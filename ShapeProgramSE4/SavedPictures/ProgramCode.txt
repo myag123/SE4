@@ -1,0 +1,10 @@
+drawto 150,250
+fill on
+circle 60
+moveto 200,150
+square 45,45
+pen purple
+moveto 10,23
+rectangle 10,90
+moveto 300,260
+triangle 150,200

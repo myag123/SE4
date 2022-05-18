@@ -9,11 +9,11 @@ namespace ShapeProgramSE4
     /// Square class extends rectangle as a square shares most of the same properties with a rectangle. 
     /// Only difference is that one size is applied to all sides of a square.
     /// </summary>
-    class Square : Rectangle 
+    public class Square : Rectangle 
     {
-        private int size; //only one size can be applied to all sides of a square
+        private int size; // Only one size can be applied to all sides of a square
 
-        public Square() :base() //explicitly calling constructor rectangle
+        public Square() :base() // Explicitly calling constructor rectangle
         { 
 
         }
@@ -27,9 +27,9 @@ namespace ShapeProgramSE4
         /// References draw method in Rectangle class 
         /// </summary>
         /// <param name="g"></param>
-        public override void draw(Graphics g)
+        public override void Draw(Graphics g, String fillFlag)
         {
-            base.draw(g);
+            base.Draw(g,fillFlag);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ShapeProgramSE4
@@ -13,17 +11,17 @@ namespace ShapeProgramSE4
     class Keywords
     {
         //declaring variables
-       private RichTextBox t1;
-       private String text;
-       private Color color;
-       private int startIndex;
+        private RichTextBox t1;
+        private String text;
+        private Color color;
+        private int startIndex;
 
         /// <summary>
         /// Constructor for Keywords class.
         /// </summary>
         public Keywords()
         {
-            
+
         }
 
 
@@ -37,7 +35,7 @@ namespace ShapeProgramSE4
         /// <param name="StartIndex">Position selector will start from.</param>
         public void chkKeyword(RichTextBox t1, String text, Color color, int startIndex)
         {
-            //assigning variables
+            // Assigning variables
             this.t1 = t1;
             this.text = text;
             this.color = color;
@@ -51,14 +49,14 @@ namespace ShapeProgramSE4
                     int index = -1;
                     int selectStart = t1.SelectionStart;
 
-                    //while keyword is found in text then specified colour is selected
+                    // While keyword is found in text then specified colour is selected
                     while ((index = t1.Text.IndexOf(text, (index + 1))) != -1)
                     {
-                        t1.SelectionColor = Color.Black; //ensure start word typed is black 
+                        t1.SelectionColor = Color.Black; // Ensure start word typed is black 
                         t1.Select((index + startIndex), text.Length);
                         t1.SelectionColor = color;
                         t1.Select(selectStart, 0);
-                        t1.SelectionColor = Color.Black; //return colour to black
+                        t1.SelectionColor = Color.Black; // Return colour to black
                     }
                 }
             }

@@ -5,9 +5,12 @@ using System.Text;
 
 namespace ShapeProgramSE4
 {
-    public class MoveTo : DrawCommand
+    /// <summary>
+    /// Class to draw rectangle which extends draw command.
+    /// </summary>
+    class DrawSquare : DrawCommand
     {
-        private int xPos, yPos;
+        private int xPos, yPos, width, height;
 
         /// <summary>
         /// Method to get and set x axis position.
@@ -28,24 +31,21 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Method to move pen on canvas by setting values of x axis and y axis
+        /// Method to get and set width of square.
         /// </summary>
-        /// <param name="c">Canvas object</param>
-        /// <param name="x">x axis position</param>
-        /// <param name="y">y axis positon</param>
-        public MoveTo(Canvas c, int x, int y) : base(c)
+        public int Width
         {
-            Name = "moveto";
-            this.xPos = x;
-            this.yPos = y;
+            get => width;
+            set => width = value;
         }
 
         /// <summary>
-        /// Constructor method for MoveTo.
+        /// Method to get and set height of square.
         /// </summary>
-        public MoveTo()
+        public int Height
         {
-
+            get => height;
+            set => height = value;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace ShapeProgramSE4
         /// </summary>
         /// <param name="Parameters">String of parameters.</param>
         /// <param name="ParamsInt">Output for integer array.</param>
-        public override void ProcessParameters(String Parameters, out int[] ParamsInt)
+        public override void ProcessParameters(string Parameters, out int[] ParamsInt)
         {
             String[] processor;
             if (Parameters == null)
@@ -63,55 +63,51 @@ namespace ShapeProgramSE4
 
             if (!Parameters.Contains(","))
             {
-                throw new GPLException("\n Unable to process MoveTo parameters due to syntax error.");
+                throw new GPLException("\n Unable to process Square parameters due to syntax error.");
             }
 
             processor = Parameters.Split(",");
 
             if (processor[1] == "")
             {
-                throw new GPLException("\n Unable to process MoveTo parameters due to syntax error.");
+                throw new GPLException("\n Unable to process Square parameters due to syntax error.");
+            }
+            if(!processor[0].Contains(processor[1]))
+            {
+                throw new GPLException("Square must contain same value of width and height");
             }
             else
             {
-                Array.ConvertAll(processor, s => int.Parse(s));
+                Array.ConvertAll(processor, s => int.Parse(s)); // Converts array to int
                 ParamsInt = Array.ConvertAll(processor, s => int.Parse(s));
             }
         }
 
         /// <summary>
-        /// Method to ensure parameter list for moveto command contains no less than 2 parameters.
+        /// Method to ensure parameter list for drawSquare command contains no less than 2 parameters.
         /// </summary>
         /// <param name="ParameterList"></param>
         public override void ParseParameters(int[] parameterList)
         {
             if (parameterList.Length != 2)
             {
-                throw new GPLException("Invalid number of parameters for MoveTo command"); // Exception thrown if incorrect number of parameters are inputted
+                throw new ApplicationException("Invalid number of parameters in DrawSquare."); // Exception thrown if incorrect number of parameters are inputted
             }
         }
 
         /// <summary>
-        /// Set method for MoveTo.
-        /// Method requires canvas object, command name and x and y axis values.
-        /// </summary>
+        /// Set method for DrawSquare
+        /// Method requires canvas object, command name andheight and width values.
         /// <param name="c">Canvas object</param>
         /// <param name="Name">Command name</param>
-        /// <param name="Parameters">x and y axis values</param>
+        /// <param name="Parameters">height and width values</param>
         public void Set(Canvas c, String Name, String Parameters)
         {
-            base.Set(c, "moveto", Parameters);
-            try
-            {
-                this.ProcessParameters(Parameters, out int[] ParamsInt);
-                this.ParseParameters(ParamsInt);
-                this.xPos = ParamsInt[0];
-                this.yPos = ParamsInt[1];
-            }
-            catch (GPLException ex)
-            {
-                c.DrawString(ex.Message);
-            }
+            base.Set(c, "square", Parameters);
+            this.ProcessParameters(Parameters, out int[] ParamsInt);
+            this.ParseParameters(ParamsInt);
+            this.width = ParamsInt[0];
+            this.height = ParamsInt[1];
         }
 
         /// <summary>
@@ -120,16 +116,16 @@ namespace ShapeProgramSE4
         /// <returns>Returns name of class and inputted parameters.</returns>
         public override string ToString()
         {
-            return base.ToString() + "MoveTo" + this.xPos + " " + this.yPos;
+            return base.ToString() + "DrawSquare" + this.xPos + " " + this.yPos;
         }
 
         /// <summary>
-        /// Execute method for MoveTo that sets x and y to new position.
+        /// Execute method for DrawSquare to draw Square to canvas with inputted values.
         /// </summary>
         /// <returns>Returns true boolean value.</returns>
         public override bool Execute()
         {
-            c.MoveTo(xPos, yPos); 
+            c.DrawSquare(width, height); //does the actual draw to the canvas class
             return true;
         }
 

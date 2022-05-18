@@ -7,41 +7,22 @@ using System.Text;
  */
 namespace ShapeProgramSE4
 {
-    class ShapeFactory
+    public class ShapeFactory
     {
         /// <summary>
         /// Method to get shape and return the shapes obejct based on user input.
         /// </summary>
         /// <param name="shapeType">Input from user.</param>
-        /// <returns></returns>
-        public Shape getShape(string shapeType)
+        /// <returns>Returns shape object</returns>
+        public Shape GetShape(string shapeType)
         {
             shapeType = shapeType.ToLower().Trim();
 
-            if (shapeType.Equals("circle"))
-            {
-                return new Circle(); //returns circle class
-            }
-
-            else if (shapeType.Equals("square"))
-            {
-                return new Square(); //returns square class
-            }
-
-            else if (shapeType.Equals("triangle"))
-            {
-                return new Triangle(); //returns triangle class
-            }
-
-            else if (shapeType.Equals("rectangle"))
-            {
-                return new Rectangle(); //returns rectangle class
-            }
-            else
-            {
-                System.ArgumentException argEx = new System.ArgumentException("Error" + shapeType + "does not exist.");
-                throw argEx;
-            }
+            if (shapeType.Equals("circle")){ return new Circle(); } 
+            if (shapeType.Equals("square")) { return new Square(); } 
+            if (shapeType.Equals("triangle")) { return new Triangle(); }
+            if (shapeType.Equals("rectangle")) { return new Rectangle(); }
+            else { throw new ArgumentException("Error" + shapeType + "does not exist."); }
         }
 
     }
