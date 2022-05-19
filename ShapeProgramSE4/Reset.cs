@@ -4,6 +4,10 @@ using System.Text;
 
 namespace ShapeProgramSE4
 {
+    /// <summary>
+    /// Reset class that extends draw command.
+    /// Class sets command name when user inputs value.
+    /// </summary>
     public class Reset : DrawCommand
     {
         public Reset()
@@ -12,7 +16,7 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Method to set Clear command. 
+        /// Method to set Reset command. 
         /// </summary>
         /// <param name="c">Canvas</param>
         /// <param name="name">Name of command</param>

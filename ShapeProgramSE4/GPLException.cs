@@ -10,6 +10,7 @@ namespace ShapeProgramSE4
     /// </summary>
    public class GPLException : Exception 
     {
+
         /// <summary>
         /// Constructor to extend base class of £xception to allow creation of custom error message.
         /// </summary>
@@ -18,8 +19,5 @@ namespace ShapeProgramSE4
         { 
         
         }
-
-        
-
     }
 }

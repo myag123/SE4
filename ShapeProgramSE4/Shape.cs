@@ -19,16 +19,25 @@ namespace ShapeProgramSE4
         //Constructor containing properties of Shape
         public Shape(Color colour, int x, int y)
         {
-            this.colour = colour; //shapes colour
-            this.x = x; //x position
-            this.y = y; //y position
+            this.colour = colour; // Shapes colour
+            this.x = x; // x position
+            this.y = y; // y position
         }
 
         protected Shape()
         {
         }
-
+        /// <summary>
+        /// Abstract method Draw for shapes. 
+        /// </summary>
+        /// <param name="g">Graphics</param>
         public abstract void Draw(Graphics g);
+
+        /// <summary>
+        /// Abstract method Draw for shapes.
+        /// </summary>
+        /// <param name="g">Graphics</param>
+        /// <param name="Fill">Fill status</param>
         public abstract void Draw(Graphics g, String Fill);
 
         /// <summary>
@@ -47,8 +56,8 @@ namespace ShapeProgramSE4
         /// Virtual method to set colour and parameter list, to be filled in later in derived classes.
         /// All shapes will need a colour and x and y parameters in this application.
         /// </summary>
-        /// <param name="colour"></param>
-        /// <param name="list"></param>
+        /// <param name="colour">Colour of pen</param>
+        /// <param name="list">Parameter list of numbers</param>
         public virtual void Set(Color colour, params int[] list) 
         {
             this.colour = colour;
@@ -64,6 +73,5 @@ namespace ShapeProgramSE4
         {
             return base.ToString()+ "  " + this.x + "," + this.y + " : ";
         }
-
     }
 }

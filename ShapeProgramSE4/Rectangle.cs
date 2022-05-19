@@ -56,12 +56,12 @@ namespace ShapeProgramSE4
         /// <param name="g">Object that creates canvas for user to draw on.</param>
         public override void Draw(Graphics g, String fillFlag)
         {
-            Pen p = new Pen(colour, 2); //creates pen object, pen draws border around a shape
-            Brush b = new SolidBrush(colour);  //brush paints the interior of a shape
+            Pen p = new Pen(colour, 2); // Creates pen object, pen draws border around a shape
+            Brush b = new SolidBrush(colour);  // Brush paints the interior of a shape
             
             if (fillFlag == "N")
             {
-                g.DrawRectangle(p, x, y, width, height);   //draws rectangle outline
+                g.DrawRectangle(p, x, y, width, height);   // Draws rectangle outline
             }
             if (fillFlag == "Y")
             {
@@ -73,7 +73,7 @@ namespace ShapeProgramSE4
         /// <summary>
         /// Method for calculating area of Rectangle. Width times Height.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Area value</returns>
         public override double CalcArea()
         {
             return width * height; 
@@ -82,12 +82,16 @@ namespace ShapeProgramSE4
         /// <summary>
         /// Method for calculating perimeter of Rectangle. Width plus Height.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Perimeter value</returns>
         public override double CalcPerimeter()
         {
             return width + height; 
         }
 
+        /// <summary>
+        /// Overriding ToString method.
+        /// </summary>
+        /// <returns>Returns name of class and value of width and height.</returns>
         public override string ToString()
         {
             return base.ToString() + "Rectangle" + " " + this.width + "  " + this.height;

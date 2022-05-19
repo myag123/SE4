@@ -117,7 +117,7 @@ namespace ShapeProgramSE4
         /// <summary>
         /// Execute method for DrawTriangle to draw triangle to canvas with inputted values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true</returns>
         public override bool Execute()
         {
             c.DrawTriangle(width, height); // Does the actual draw to the canvas class

@@ -117,9 +117,9 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// 
+        /// Execute method for DrawRectangle to draw rectangle to canvas with inputted values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true</returns>
         public override bool Execute()
         {
             c.DrawRectangle(width,height); //does the actual draw to the canvas class

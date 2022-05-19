@@ -8,7 +8,7 @@ namespace ShapeProgramSE4
     /// <summary>
     /// Abstract class Command extends CommandInterface class.
     /// This class contains setter and getter methods that every command must require.
-    /// For example all commands require a name followed by a list of parameters except short command like 'clear'.
+    /// For example all commands require a name followed by a list of parameters except short commands like 'clear'.
     /// </summary>
     public abstract class Command : CommandInterface
     {
@@ -16,6 +16,9 @@ namespace ShapeProgramSE4
         private String parameterList;
         private int varValue;
 
+        /// <summary>
+        /// Constructor for Command
+        /// </summary>
         protected Command()
         { 
         
@@ -39,15 +42,6 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Expression e.g. = + - *
-        /// For commands such as variables.
-        /// </summary>
-        public String Expression
-        {
-            get { return Expression; }
-        }
-
-        /// <summary>
         /// Gets and sets value of variable
         /// </summary>
         public int VarValue
@@ -56,15 +50,11 @@ namespace ShapeProgramSE4
             set { varValue = value; }
         }
 
-
         /// <summary>
         /// Abstract method to Execute.
         /// All commands must have an execute method, which will be overriden in classes that inherit this.
         /// </summary>
-        /// <returns>
-        /// False means executions has failed. 
-        /// True means execution was successful.
-        /// </returns>
+        /// <returns>true or false</returns>
         public abstract bool Execute();
 
         /// <summary>

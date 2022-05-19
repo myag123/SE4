@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-/*
- * Factory class, where all the dependencies are.
- * Contains just one method, getShape that returns the available shapes
- */
 namespace ShapeProgramSE4
 {
+    /// <summary>
+    /// Factory class, where all the dependencies are.
+    /// Contains just one method, getShape that returns the available shapes.
+    /// </summary>
     public class ShapeFactory
     {
         /// <summary>
@@ -22,6 +22,7 @@ namespace ShapeProgramSE4
             if (shapeType.Equals("square")) { return new Square(); } 
             if (shapeType.Equals("triangle")) { return new Triangle(); }
             if (shapeType.Equals("rectangle")) { return new Rectangle(); }
+            if (shapeType.Equals("pie")) { return new Pie(); }
             else { throw new ArgumentException("Error" + shapeType + "does not exist."); }
         }
 

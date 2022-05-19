@@ -6,6 +6,10 @@ using System.Text;
 
 namespace ShapeProgramSE4
 {
+    /// <summary>
+    /// Class for command Pen Color.
+    /// Command factory will create an object of this class.
+    /// </summary>
     public class PenColor : DrawCommand
     {
         String name;

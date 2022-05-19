@@ -7,7 +7,7 @@ using System.Text;
 namespace ShapeProgramSE4
 {
     /// <summary>
-    /// Canvas class handles the programs drawing system. It will control the Pens properties and its positions 
+    /// Canvas class handles the programs drawing system. It will control the pens properties and its positions 
     /// depending on user input. It will also contain all the methods to allow the user to draw a shape. 
     /// </summary>
     public class Canvas
@@ -32,7 +32,7 @@ namespace ShapeProgramSE4
         {
             this.g = g;
             myCol = Color.Black;
-            pen.Color = myCol;
+            pen.Color = myCol; // Setting pen colour
 
             // Setting default position of pen point
             xPos = origPos;
@@ -99,6 +99,20 @@ namespace ShapeProgramSE4
             Rectangle rectangle = new Rectangle();
             rectangle.Set(myCol, xPos, yPos, height, width);
             rectangle.Draw(g,fillFlag);
+        }
+
+        /// <summary>
+        /// Method to draw pie to canvas.
+        /// Calls pies set method passing in the current pen color, current x and y position and 
+        /// users given height and width.
+        /// </summary>
+        /// <param name="height">Height value inputted by user</param>
+        /// <param name="width">Width value inputted by user</param>
+        public void DrawPie(int height, int width)
+        {
+            Pie pie = new Pie();
+            pie.Set(myCol, xPos, yPos, height, width);
+            pie.Draw(g, fillFlag);
         }
 
         /// <summary>

@@ -9,7 +9,6 @@ namespace ShapeProgramSE4
     /// <summary>
     /// Class for command drawTo.
     /// Command factory will create an object of this class.
-    /// 
     /// </summary>
     public class DrawTo : DrawCommand
     {

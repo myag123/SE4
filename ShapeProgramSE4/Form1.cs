@@ -32,6 +32,7 @@ namespace ShapeProgramSE4
         const string syntDrwRec = "rectangle";
         const string syntDrwTri = "triangle";
         const string syntDrwCir = "circle";
+        const string syntDrwPie = "pie";
         const string syntMoveTo = "moveto";
         const string syntClr = "clear";
         const string syntRst = "reset";
@@ -123,6 +124,7 @@ namespace ShapeProgramSE4
             Keywords.chkKeyword(richTxtCmdLine, syntDrwRec, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdLine, syntDrwTri, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdLine, syntDrwCir, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntDrwPie, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdLine, syntMoveTo, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdLine, syntRst, Color.Red, 0);
             Keywords.chkKeyword(richTxtCmdLine, syntClr, Color.Red, 0);
@@ -150,6 +152,7 @@ namespace ShapeProgramSE4
             Keywords.chkKeyword(richTxtCmdBox, syntDrwRec, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdBox, syntDrwTri, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdBox, syntDrwCir, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntDrwPie, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdBox, syntMoveTo, Color.Green, 0);
             Keywords.chkKeyword(richTxtCmdBox, syntRst, Color.Red, 0);
             Keywords.chkKeyword(richTxtCmdBox, syntClr, Color.Red, 0);
@@ -177,7 +180,7 @@ namespace ShapeProgramSE4
             if (e.KeyCode == Keys.Enter) // If user hits enter key then input is passed to parser class line by line
             {
                 String[] allLines = richTxtCmdBox.Text.ToString().ToLower().Trim().Split("\n"); //  Creating string array - split by newline
-                while (i < richTxtCmdBox.Lines.Length) 
+                while (i < richTxtCmdBox.Lines.Length) // While i is less than lines in cmdBox - each line is passed to ParseCommand line by line
                 {
                     MyParser.ParseCommand(allLines[i], false);
                     i++;
@@ -299,7 +302,6 @@ namespace ShapeProgramSE4
                 ex.Message.ToString();
                 throw new GPLException("\n Filename cannot be blank!");
             }
-
         }
 
         /// <summary>
@@ -313,9 +315,5 @@ namespace ShapeProgramSE4
             Refresh(); // Updating display
         }
 
-        private void richTxtCmdBox_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
 }

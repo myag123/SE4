@@ -13,6 +13,7 @@ namespace ShapeProgramSE4
     /// </summary>
     public class CodeChecker
     {
+        // Declaring array lists for types of commands
         public ArrayList drwCmds = new ArrayList();
         public ArrayList shrtDrwCmds = new ArrayList();
         public ArrayList varCmds = new ArrayList();
@@ -36,6 +37,7 @@ namespace ShapeProgramSE4
             drwCmds.Add("moveto");    // [5]
             drwCmds.Add("pen");       // [6]
             drwCmds.Add("fill");      // [7]
+            drwCmds.Add("pie");       // [8]
 
             shrtDrwCmds.Add("clear"); // [0]
             shrtDrwCmds.Add("reset"); // [1]
@@ -54,28 +56,25 @@ namespace ShapeProgramSE4
         /// <returns>true or false</returns>
         public bool DrawCmdRules(String cmd, String value, out bool res)
         {
-            // If command equals circle 
-            if (cmd.Equals(drwCmds[0]) == true)
+            if (cmd.Equals(drwCmds[0]) == true) // If command equals circle
             {
                 value.Trim();
-                if (value.Contains(",") == true) { res = false; return res; } // If parameter of circle contains , then false as circle requires only one parameter
+                if (value.Contains(",") == true) { res = false; return res; } // If parameter of circle contains a comma then res is false as circle requires only one parameter
                 if (regexInt.IsMatch(value)) { res = true; return res; }  // If parameter of circle is a number
-                if(regexLetters.IsMatch(value)) { res = true; return res; } // If parameter of circle is letters of array then res equals true
-                else { res = false; return res; } // NEEDS WORK!!
+                if(regexLetters.IsMatch(value)) { res = true; return res; } // If parameter of circle is letters of a variable then res equals true
+                else { res = false; return res; } 
             }
 
             // If command is any of the draw commands with 2 parameters required 
-            else if (cmd.Equals(drwCmds[2]) == true || cmd.Equals(drwCmds[3]) == true|| cmd.Equals(drwCmds[4]) == true || cmd.Equals(drwCmds[5]) == true)
+            else if (cmd.Equals(drwCmds[2]) == true || cmd.Equals(drwCmds[3]) == true|| cmd.Equals(drwCmds[4]) == true || cmd.Equals(drwCmds[5]) == true || cmd.Equals(drwCmds[8]) == true)
             {
                 String[] splitter;
-                splitter = value.Split(","); 
+                splitter = value.Split(","); // Splits value up by comma
                 if(splitter.Length.Equals(1)||splitter.Length > 2) { res = false; return res; } // If value contains one or more than two parameters
-
                 if (regexInt.IsMatch(splitter[0]) && regexInt.IsMatch(splitter[1])){ res = true;} else { res = false; } // If command values contains just numbers then res = true
                 return res;
             }
-            // If command equals square
-            else if (cmd.Equals(drwCmds[1]) == true)
+            else if (cmd.Equals(drwCmds[1]) == true) // If command equals square
             {
                 String[] splitter;
                 splitter = value.Split(",");
@@ -83,19 +82,17 @@ namespace ShapeProgramSE4
                 if (splitter[0].Contains(splitter[1]) == true && regexInt.IsMatch(splitter[0]) && regexInt.IsMatch(splitter[1])) // If parameters equal same number and are both numbers
                 { res = true; return res; } else { res = false; return res; }
             }
-            // If command equals fill
-            else if (cmd.Equals(drwCmds[7]) == true)
+            else if (cmd.Equals(drwCmds[7]) == true) // If command equals fill
             {
                 value.Trim();
                 if (value.Equals("on") || value.Equals("off")){ res = true; } else { res = false; } // If parameters equal on or off then res equals true
             }
-            // If command equals pen
-            else if(cmd.Equals(drwCmds[6]) ==  true)
+            else if(cmd.Equals(drwCmds[6]) ==  true)  // If command equals pen
             {
                 value.Trim();
                 try
                 {
-                    if (ColorTranslator.FromHtml(value).IsKnownColor == true) // If value is a color that exists 
+                    if (ColorTranslator.FromHtml(value).IsKnownColor == true) // If value is a color that exists res is true 
                     {
                         res = true;
                         return res;
@@ -128,9 +125,9 @@ namespace ShapeProgramSE4
         /// <summary>
         /// Method for when variables are declared.
         /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="cmd">Full command</param>
+        /// <param name="name">Variable name</param>
+        /// <param name="value">Int value of variable</param>
         /// <param name="res">Result of res boolean after command has been validated</param>
         /// <returns>true or false</returns>
         public bool DeclareVar(String cmd, String name, int value, out bool res)
@@ -146,15 +143,37 @@ namespace ShapeProgramSE4
         /// <summary>
         /// Method for when variable is set to a value.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">variable name</param>
+        /// <param name="value">Int value of variable</param>
         /// <param name="res">Result of res boolean after command has been validated</param>
         /// <returns>true or false</returns>
         public bool SetDeclaredVar(String name, int value, out bool res)
         {
-            //If command equals var and command contains only letters and value contains only numbers
-            if (regexLetters.IsMatch(name) && regexInt.IsMatch(value.ToString()))
+            if (regexLetters.IsMatch(name) && regexInt.IsMatch(value.ToString())) //If command equals var and command contains only letters and value contains only numbers
             { res = true;
+                return res;
+            }
+            else { res = false; }
+            return res;
+        }
+
+        /// <summary>
+        /// Method to check if statement.
+        /// </summary>
+        /// <param name="name">If statement</param>
+        /// <param name="res">Result of res boolean after command has been validated</param>
+        /// <returns>true or false</returns>
+        public bool IfStatement(String name, out bool res)
+        {
+            if(name.Contains("if") == true && name.Contains("==") == true) // If statement contains if and == then res is true
+            {
+                res = true;
+                return res;
+            }
+
+            if(name.Equals("endif")) // If statement contains endif then res is true
+            {
+                res = true;
                 return res;
             }
             else { res = false; }

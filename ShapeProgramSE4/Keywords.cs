@@ -6,11 +6,11 @@ namespace ShapeProgramSE4
 {
     /// <summary>
     /// This class will allow keywords to be highlighted when the user types commands into the command line/box
-    /// of the application.
+    /// of the application. This allows the user to be aware of the syntax/keywords for the application
     /// </summary>
     class Keywords
     {
-        //declaring variables
+        // Declaring variables
         private RichTextBox t1;
         private String text;
         private Color color;

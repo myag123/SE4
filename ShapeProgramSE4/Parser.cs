@@ -19,7 +19,7 @@ namespace ShapeProgramSE4
     public class Parser
     {
         String[] splitter; //array string to split up command 
-        String name, coords, colour, command, exists, methodFlag = "X", methodName, methodRun = "N";
+        String name, coords, colour, command, exists, methodFlag = "X", methodName, methodRun = "N", commandChk = "N", ifStmntTrue = "X";
         String varChk = "";
         int value, result, methodCounter = 0, varChecker = 0, lineMethodCounter = 0, lineTotal = 0;
 
@@ -62,8 +62,8 @@ namespace ShapeProgramSE4
         {
             try
             {
-                Var varCommand = (Var)CommFactory.MakeCommand("var"); // Creating object of Var class
-                Method mthd = (Method)CommFactory.MakeCommand("method");
+                Var varCommand = (Var)CommFactory.MakeCommand("var");  // Creating object of Var class
+                Method mthd = (Method)CommFactory.MakeCommand("method"); // Creating object of Method class
 
                 if (line.Equals("") == true) { throw new GPLException("\n No code to run."); } // If user enters in blank line, then exception is thrown
 
@@ -72,7 +72,7 @@ namespace ShapeProgramSE4
 
                 if (command.Equals("method") == true) // If command equals method
                 {
-                    if (execute == true) // If execute is true then method is stored in methodNameList and methodFlag is set to Y
+                    if (execute == true) // If execute is true then method is stored in methodNameList and methodFlag is set to Y and methodFlag is set to N
                     {
                         Debug.WriteLine("Method declared");
                         methodFlag = "Y";
@@ -80,47 +80,47 @@ namespace ShapeProgramSE4
                         name = splitter[1].ToString();
                         methodName = splitter[1].ToString(); // Storing current method name
                         methodNameList.Add(name);
-                        mthd.SetName(name);
-                        methodCounter++;
+                        mthd.SetName(name); // Storing method name in arraylist in method class
+                        methodCounter++; // Method counter increased
                     }
-                    if(execute == false)
+                    if (execute == false) // If execute false line is passed to codechecker for validation
                     {
                         Validator.DrawShrtCmdRules(command, out valid); // Command is passed to codechecker for validation
-                        if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no error is reported
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no error is reported
                         if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                     }
                 }
                 
                 if (command.Equals("endmethod")) // If command equals endmethod 
                 {
-                    if (execute == true)
+                    if (execute == true) // If execute is true then method flag is set to N and number of lines in the method is stored in line total
                     {
                         methodFlag = "N";
                         lineTotal = lineMethodCounter;
                     }
-                    if (execute == false)
+                    if (execute == false) // If execute false line is passed to codechecker for validation
                     {
                         Validator.DrawShrtCmdRules(command, out valid); // Command is passed to codechecker for validation
-                        if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no error is reported
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no error is reported
                         if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                     }
                 }
 
-                if (command.Equals("reset") == true && execute == false || command.Equals("clear") == true && execute == false) // If command equals reset or clear and execute is false
+                if (command.Equals("reset") == true && execute == false || command.Equals("clear") == true && execute == false) // If command equals reset or clear and execute is false line is passed to codechecker for validation
                 {
                     Validator.DrawShrtCmdRules(command.Trim(), out valid); // Command is passed to codechecker for validation
-                    if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no error is reported
+                    if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no error is reported
                     if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                 }
 
-                if (execute == true && !methodFlag.Equals("Y") && methodRun == "N" && methodNameList.Contains(command)) // If method name exists in methodNameList and methodFlag & methodRun is N
+                if (execute == true && !methodFlag.Equals("Y") && methodRun == "N" && methodNameList.Contains(command)) // If method name contains inputted command and methodFlag is not equal to Y and methodRun is N
                 {
                     name = splitter[0].ToString();
                     methodFlag = "X"; // Resetting flag ready for next method
 
-                    foreach (string element in methodLines.Where(pair => pair.Key == name).Select(pair => pair.Value))
+                    foreach (var element in methodLines.Where(pair => pair.Key == name).Select(pair => pair.Value)) // For each element found in methodLines where method name equals Key
                     {
-                        var valued = methodLines.Where(pair => pair.Key == name).Select(pair => pair.Value).FirstOrDefault();
+                        //var values = methodLines.Where(pair => pair.Key == name).Select(pair => pair.Value);
                         for (int i = 0; i < methodLines.Count; i++)
                         {
                             var item = methodLines.ElementAt(i);
@@ -139,7 +139,7 @@ namespace ShapeProgramSE4
                 {
                     if (splitter.Length.Equals(1)) { throw new GPLException("Command " + command + " must require value."); } // If length of splitter equals 1 then exception is thrown
                     Validator.DrawCmdRules(command.Trim(), splitter[1], out valid); // Command is passed to drawCmdRules for validation on draw commands
-                    if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no error is reported
+                    if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no error is reported
                     if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                 }
 
@@ -193,7 +193,7 @@ namespace ShapeProgramSE4
                             varChkValueList.Add(value);
                             varChk = "Y";
                             Validator.DeclareVar(command, name, value, out valid);
-                            if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no exception is reported
+                            if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no exception is reported
                             if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                         }
                     } 
@@ -243,7 +243,7 @@ namespace ShapeProgramSE4
                         varChkValueList.Add(value);
                         Validator.DeclareVar(command, name, value, out valid);
 
-                        if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no exception is reported
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no exception is reported
                         if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                     }
                 } // End of if user declares variable without setting value
@@ -290,7 +290,7 @@ namespace ShapeProgramSE4
                                 varChkValueList[position] = splitter[2];  // Sets the value of the variable in array list
                                 Validator.SetDeclaredVar(name, value, out valid);
 
-                                if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then exception is cleared from screen
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then exception is cleared from screen
                                 if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                             }
                             else if (!item.Contains(name)) { throw new GPLException("\n Cannot find variable " + name + "\n Please declare variable before it is set."); }
@@ -348,15 +348,66 @@ namespace ShapeProgramSE4
                                 Validator.SetDeclaredVar(name, value, out valid);
                                 Debug.WriteLine("var " + splitter[0].ToString() + " new calculation = " + value);
 
-                                if (valid == true) { Canvas.DrawString(""); } // If codechecker class method returns true then no exception is reported
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no exception is reported
                                 if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
 
                             }
                             else if (!item.Contains(name)) { throw new GPLException("\n Cannot find variable " + name + "\n Please declare variable before it is set."); }
                         }
                     }
-                }
-                if (command.Equals("clear") == true && execute == true && !methodFlag.Equals("N")) // If command is equal to clear
+                } // End of var calculation
+
+                if (command.Equals("if") == true && !methodFlag.Equals("N")) // If command equals if
+                {
+                    if (execute == true) // If execute is true then if statement is check against variable already declared
+                    {
+                        int position = 0;
+                        ifStmntTrue = "X"; // Resetting ifStmntTrue flag
+
+                        String[] splitVar; // Declaring string array to split up part of if statement
+                        name = splitter[1].ToString(); 
+                        splitVar = name.Split("=="); // Split name up by equals signs
+                        Debug.WriteLine(splitVar[0].ToString() + " " + splitVar[1].ToString());
+
+                        if (varNameList.Contains(splitVar[0])) // If name of variable in if statment exists in varNameList
+                        {
+                            position = varNameList.IndexOf(splitVar[0]); // Finds the position of variable in varNameList
+                            if(varValueList[position].Equals(Int32.Parse(splitVar[1])))  // If value stored in varValueList equals value of variable in if statement then ifStmntTrue is set to Y
+                            {
+                                ifStmntTrue = "Y";
+                                Debug.WriteLine("if statment is true: " + ifStmntTrue);
+                            }
+                        }
+                        else if (!varNameList.Contains(splitVar[0])) // If variable not found in varNameList then ifStmntTrue is N exception is thrown  
+                        {
+                            ifStmntTrue = "N";
+                            throw new GPLException("If statement is false. Variable can't be found.");
+                        }
+                    }
+                    if (execute == false) // If execute is false then if statement is passed to codechecker for validation
+                    {
+                        Validator.IfStatement("if "+ splitter[1].ToString(), out valid); // Command is passed to codechecker for validation
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no error is reported
+                        if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
+                    }
+                } // End of if command equals if
+
+                if (command.Equals("endif") && !methodFlag.Equals("N")) // If command equals endif then ifStmntTrue is set to X
+                {
+                    if(execute == true)
+                    {
+                        ifStmntTrue = "X";
+                        Debug.WriteLine("endif " + ifStmntTrue);
+                    }
+                    if(execute == false)
+                    {
+                        Validator.IfStatement(command, out valid); // Command is passed to codechecker for validation
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } // If codechecker class method returns true then no error is reported
+                        if (valid == false) { throw new GPLException("\n Invalid syntax for " + command + "\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
+                    }
+                } // End of if command equals 
+
+                if (command.Equals("clear") == true && execute == true && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to clear
                 {
                     Clear c = (Clear)CommFactory.MakeCommand("clear");
                     name = splitter[0].ToString();
@@ -375,7 +426,7 @@ namespace ShapeProgramSE4
                         return c; 
                     }
                 }
-                if (command.Equals("reset") == true && execute == true && !methodFlag.Equals("N")) // If command is equal to reset
+                if (command.Equals("reset") == true && execute == true && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to reset
                 {
                     Reset r = (Reset)CommFactory.MakeCommand("reset");
                     name = splitter[0].ToString();
@@ -394,8 +445,9 @@ namespace ShapeProgramSE4
                         return r; 
                     }
                    
-                }
-                if (command.Equals("fill") && execute == true && !methodFlag.Equals("N")) // If command is equal to fill
+                } // End of if command equals reset
+
+                if (command.Equals("fill") && execute == true && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to fill
                 {
                     //if (coords == null) { throw new GPLException("\n No status for Fill."); }
                     Fill f = (Fill)CommFactory.MakeCommand("fill");
@@ -416,7 +468,7 @@ namespace ShapeProgramSE4
                         return f; 
                     }
                 }
-                if (command.Equals("pen") == true && execute == true && !methodFlag.Equals("N")) // If command is equal to Pen and execute true
+                if (command.Equals("pen") == true && execute == true && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to Pen and execute true
                 {
                     PenColor penCommand = (PenColor)CommFactory.MakeCommand("pen");
                     try 
@@ -427,7 +479,7 @@ namespace ShapeProgramSE4
                         if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                         {
                             string code = name + " " + colour;
-                            methodLines.Add(new KeyValuePair<string, string>(methodName, colour)); //Storing methodName and code as user would type it in to methodLines
+                            methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
                             lineMethodCounter++; // Increases line
                             Debug.WriteLine(code + " " + methodName + " added to method lines");
                         }
@@ -445,7 +497,7 @@ namespace ShapeProgramSE4
                     }
                 }
 
-                if (command.Equals("circle") && !methodFlag.Equals("N")) // If command is equal to Circle
+                if (command.Equals("circle") && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to Circle
                 {
                     int position = 0;
                     string result;
@@ -486,7 +538,7 @@ namespace ShapeProgramSE4
                                 position = varChkNameList.IndexOf(coords); // Finds the position of the inputted variable
                                 result = varChkValueList[position].ToString();
                                 Validator.DrawCmdRules(command, result, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }// If codechecker class method returns true then no exception is reported
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }// If codechecker class method returns true then no exception is reported
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw circle.\n Please correct before running code."); } // If codechecker class method returns false then exception is thrown
                             }
                             else { throw new GPLException("\n Invalid variable used to draw circle."); }// Else exception is thrown 
@@ -495,12 +547,12 @@ namespace ShapeProgramSE4
                     if (execute == false && regexInt.IsMatch(coords)) // If execute is false and coords contain numbers
                     {
                         Validator.DrawCmdRules(command, coords, out bool valid);
-                        if (valid == true) { Canvas.DrawString(""); } 
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; } 
                         if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw circle.\n Please correct before running code."); } 
                     }
                 } // End of if command equals Circle
 
-                if (command.Equals("rectangle") && !methodFlag.Equals("N")) // If command equals rectangle 
+                if (command.Equals("rectangle") && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command equals rectangle 
                 {
                     int position = 0;
                     string result;
@@ -558,7 +610,7 @@ namespace ShapeProgramSE4
                     if (execute == false && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1])) // If execute is false and coords contains numbers
                     {
                         Validator.DrawCmdRules(command, coords, out bool valid);
-                        if (valid == true) { Canvas.DrawString(""); }
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                         if (valid == false) { throw new GPLException("\n Cannot draw rectangle.\n Please correct before running code."); }
                     }
                     if (execute == false && regexLetters.IsMatch(check[0]) || regexLetters.IsMatch(check[1]))
@@ -575,7 +627,7 @@ namespace ShapeProgramSE4
                                 result2 = varChkValueList[position].ToString();
                                 parsed = result + "," + result2;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw rectangle.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[0])) // If e.g. rectangle varname,12 - - value of variable is found and passed to codechecker for validation 
@@ -584,7 +636,7 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = result + "," + check[1];
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw rectangle.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[1])) // If e.g. rectangle 12,varname - value of variable is found and passed to codechecker for validation 
@@ -593,14 +645,114 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = check[0] + "," + result;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw rectangle.\n Please correct before running code."); }
                             }
                         }
                     }
                 } //End of if command equals rectangle
 
-                if (command.Equals("square") && !methodFlag.Equals("N")) // If command is equal to square
+                if (command.Equals("pie") && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command equals pie 
+                {
+                    int position = 0;
+                    string result;
+
+                    DrawPie p = (DrawPie)CommFactory.MakeCommand("pie");
+                    name = splitter[0].ToString();
+                    coords = splitter[1].ToString();
+                    String[] check = coords.Split(",");
+
+                    if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
+                    {
+                        string code = name + " " + coords;
+                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        lineMethodCounter++; // Increases line
+                        Debug.WriteLine(code + " " + methodName + " added to method lines");
+                    }
+                    else if (execute == true && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1]) && !methodFlag.Equals("Y")) { p.Set(Canvas, name, coords); p.Execute(); return p; } // If execute is true and coords contain numbers parameters are passed to drawpie class
+                    else if (execute == true && regexLetters.IsMatch(check[0]) && !methodFlag.Equals("Y") || regexLetters.IsMatch(check[1]) && !methodFlag.Equals("Y")) // If execute is true and first parameter or second parameter equals letter
+                    {
+                        String parsed;
+                        foreach (string item in varNameList) // Checks if coords exists in array
+                        {
+                            if (item.Contains(check[0]) && item.Contains(check[1])) // If e.g. pie varname,varname - value of variable is found and passed to drawpie class
+                            {
+                                string result2;
+                                position = varNameList.IndexOf(check[0]);
+                                result = varValueList[position].ToString();
+                                position = varNameList.IndexOf(check[1]);
+                                result2 = varValueList[position].ToString();
+                                parsed = result + "," + result2;
+                                p.Set(Canvas, name, parsed);
+                                p.Execute();
+                                return p;
+                            }
+                            else if (item.Contains(check[0])) // If e.g. pie varname,12 - value of variable is found and passed to drawpie class
+                            {
+                                position = varNameList.IndexOf(check[0]); // Finds the position of the inputted variable
+                                result = varValueList[position].ToString();
+                                parsed = result + "," + check[1];
+                                p.Set(Canvas, name, parsed);
+                                p.Execute();
+                                return p;
+                            }
+                            else if (item.Contains(check[1])) // If e.g. pie 12,varname - value of variable is found and passed to drawpie class
+                            {
+                                position = varNameList.IndexOf(check[1]);
+                                result = varValueList[position].ToString();
+                                parsed = check[0] + "," + result;
+                                p.Set(Canvas, name, parsed);
+                                p.Execute();
+                                return p;
+                            }
+                        }
+                    }
+                    if (execute == false && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1])) // If execute is false and coords contains numbers
+                    {
+                        Validator.DrawCmdRules(command, coords, out bool valid);
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
+                        if (valid == false) { throw new GPLException("\n Cannot draw pie.\n Please correct before running code."); }
+                    }
+                    if (execute == false && regexLetters.IsMatch(check[0]) || regexLetters.IsMatch(check[1]))
+                    {
+                        String parsed;
+                        foreach (string item in varChkNameList) // Checks if coords exists in array
+                        {
+                            if (item.Contains(check[0]) && item.Contains(check[1])) // If e.g. pie varname,varname - value of variable is found and passed to codechecker for validation 
+                            {
+                                string result2;
+                                position = varChkNameList.IndexOf(check[0]);
+                                result = varChkValueList[position].ToString();
+                                position = varChkNameList.IndexOf(check[1]);
+                                result2 = varChkValueList[position].ToString();
+                                parsed = result + "," + result2;
+                                Validator.DrawCmdRules(command, parsed, out bool valid);
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
+                                if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw pie.\n Please correct before running code."); }
+                            }
+                            else if (item.Contains(check[0])) // If e.g. pie varname,12 - - value of variable is found and passed to codechecker for validation 
+                            {
+                                position = varChkNameList.IndexOf(check[0]);
+                                result = varChkValueList[position].ToString();
+                                parsed = result + "," + check[1];
+                                Validator.DrawCmdRules(command, parsed, out bool valid);
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
+                                if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw pie.\n Please correct before running code."); }
+                            }
+                            else if (item.Contains(check[1])) // If e.g. pie 12,varname - value of variable is found and passed to codechecker for validation 
+                            {
+                                position = varChkNameList.IndexOf(check[1]);
+                                result = varChkValueList[position].ToString();
+                                parsed = check[0] + "," + result;
+                                Validator.DrawCmdRules(command, parsed, out bool valid);
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
+                                if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw pie.\n Please correct before running code."); }
+                            }
+                        }
+                    }
+                } //End of if command equals pie
+
+                if (command.Equals("square") && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to square
                 {
                     int position = 0;
                     string result;
@@ -657,7 +809,7 @@ namespace ShapeProgramSE4
                     if (execute == false && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1])) // If execute is false and coords contains numbers
                     {
                         Validator.DrawCmdRules(command, coords, out bool valid);
-                        if (valid == true) { Canvas.DrawString(""); }
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                         if (valid == false) { throw new GPLException("\n Cannot draw square.\n Please correct before running code."); }
                     }
                     if (execute == false && regexLetters.IsMatch(check[0]) || regexLetters.IsMatch(check[1])) // If execute is false and parameters either parameters are set to variables
@@ -683,7 +835,7 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = result + "," + check[1];
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw square.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[1])) // If e.g. square 12,varname - value of variable is found and passed to codechecker for validation
@@ -692,14 +844,14 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = check[0] + "," + result;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw square.\n Please correct before running code."); }
                             }
                         }
                     }
                 } // End of if command equals square
 
-                if (command.Equals("triangle") && !methodFlag.Equals("N")) // If command is equal to triangle
+                if (command.Equals("triangle") && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command is equal to triangle
                 {
                     int position = 0;
                     string result;
@@ -775,7 +927,7 @@ namespace ShapeProgramSE4
                                 result2 = varChkValueList[position].ToString();
                                 parsed = result + "," + result2;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw triangle.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[0])) // If e.g. triangle varname,12
@@ -784,7 +936,7 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = result + "," + check[1];
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw triangle.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[1])) // If e.g. triangle 12,varname
@@ -793,14 +945,14 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = check[0] + "," + result;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable to draw triangle.\n Please correct before running code."); }
                             }
                         }
                     }
                 } // End of is command equals triangle
 
-                if (command.Equals("drawto") == true && !methodFlag.Equals("N")) //if command equals drawto then command is split into arrays and passed to drawto class
+                if (command.Equals("drawto") == true && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) //if command equals drawto then command is split into arrays and passed to drawto class
                 {
                     int position = 0;
                     string result;
@@ -859,7 +1011,7 @@ namespace ShapeProgramSE4
                     if (execute == false && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1])) // If execute is false and coords contains numbers
                     {
                         Validator.DrawCmdRules(command, coords, out bool valid);
-                        if (valid == true) { Canvas.DrawString(""); }
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                         if (valid == false) { throw new GPLException("\n Cannot execute drawto.\n Please correct before running code."); }
                     }
                     if (execute == false && regexLetters.IsMatch(check[0]) || regexLetters.IsMatch(check[1]))
@@ -876,7 +1028,7 @@ namespace ShapeProgramSE4
                                 result2 = varChkValueList[position].ToString();
                                 parsed = result + "," + result2;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable for drawto.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[0])) // If e.g. drawto varname,12
@@ -885,7 +1037,7 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = result + "," + check[1];
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable for drawto.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[1])) // If e.g. drawto 12,varname
@@ -894,14 +1046,14 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = check[0] + "," + result;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable for drawto.\n Please correct before running code."); }
                             }
                         }
                     }
                 } // End of if command equals drawto
 
-                if (command.Equals("moveto") && !methodFlag.Equals("N")) // If command equals moveto
+                if (command.Equals("moveto") && !methodFlag.Equals("N") && !ifStmntTrue.Equals("N")) // If command equals moveto
                 {
                     int position = 0;
                     string result;
@@ -960,7 +1112,7 @@ namespace ShapeProgramSE4
                     if (execute == false && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1])) // If execute is false and coords contains numbers
                     {
                         Validator.DrawCmdRules(command, coords, out bool valid);
-                        if (valid == true) { Canvas.DrawString(""); }
+                        if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                         if (valid == false) { throw new GPLException("\n Cannot execute moveto.\n Please correct before running code."); }
                     }
                     if (execute == false && regexLetters.IsMatch(check[0]) || regexLetters.IsMatch(check[1]))
@@ -977,7 +1129,7 @@ namespace ShapeProgramSE4
                                 result2 = varChkValueList[position].ToString();
                                 parsed = result + "," + result2;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable for moveto.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[0])) // If e.g. moveto varname,12
@@ -986,7 +1138,7 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = result + "," + check[1];
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable for moveto.\n Please correct before running code."); }
                             }
                             else if (item.Contains(check[1])) // If e.g. moveto 12,varname
@@ -995,13 +1147,17 @@ namespace ShapeProgramSE4
                                 result = varChkValueList[position].ToString();
                                 parsed = check[0] + "," + result;
                                 Validator.DrawCmdRules(command, parsed, out bool valid);
-                                if (valid == true) { Canvas.DrawString(""); }
+                                if (valid == true) { Canvas.DrawString(""); commandChk = "Y"; }
                                 if (valid == false) { throw new GPLException("\n Cannot find declared variable for moveto.\n Please correct before running code."); }
                             }
                         }
                     }
                 } // End of if command equals moveto
-
+                else if(commandChk.Equals("N")) // If command check equals N then 
+                {
+                    throw new GPLException("\n Invalid command " + command + "\r");
+                }
+                    
             } // End bracket for try
               catch (GPLException ex)
               {
@@ -1009,8 +1165,8 @@ namespace ShapeProgramSE4
               }
               catch (IndexOutOfRangeException ex)
               {
-                 Debug.WriteLine(ex);
-              }
+                Canvas.DrawString("No value entered for " + command);
+            }
               return null;
 
         } // End of ParseCommand method

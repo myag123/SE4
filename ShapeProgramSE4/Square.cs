@@ -18,6 +18,14 @@ namespace ShapeProgramSE4
 
         }
 
+        /// <summary>
+        /// Constructor method for square class - passing in parameters of same value and extending base class (Shape)
+        /// </summary>
+        /// <param name="colour">Parameter for square colour</param>
+        /// <param name="x">Parameter for x axis</param>
+        /// <param name="y">Parameter for y axis</param>
+        /// <param name="width">Parameter for width of square</param>
+        /// <param name="height">Parameter for height of square</param>
         public Square(Color colour, int x, int y, int size) : base(colour, x, y, size, size)
         {
             this.size = size;
@@ -26,7 +34,7 @@ namespace ShapeProgramSE4
         /// <summary>
         /// References draw method in Rectangle class 
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">Grpahics</param>
         public override void Draw(Graphics g, String fillFlag)
         {
             base.Draw(g,fillFlag);
