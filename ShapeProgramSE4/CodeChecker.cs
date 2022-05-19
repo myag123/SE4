@@ -39,6 +39,8 @@ namespace ShapeProgramSE4
 
             shrtDrwCmds.Add("clear"); // [0]
             shrtDrwCmds.Add("reset"); // [1]
+            shrtDrwCmds.Add("method"); // [2]
+            shrtDrwCmds.Add("endmethod"); // [3]
 
             varCmds.Add("var"); // [0]
         }
@@ -117,8 +119,8 @@ namespace ShapeProgramSE4
         /// <returns>true or false</returns>
         public bool DrawShrtCmdRules(String cmd, out bool res)
         {
-            // If command equals clear or reset then res equals true
-            if (cmd.Equals(shrtDrwCmds[0]) == true || cmd.Equals(shrtDrwCmds[1]) == true){ res = true; return res; }
+            // If command equals clear, reset, method or endmethod then res equals true
+            if (cmd.Equals(shrtDrwCmds[0]) == true || cmd.Equals(shrtDrwCmds[1]) == true || cmd.Equals(shrtDrwCmds[2]) == true || cmd.Equals(shrtDrwCmds[3]) == true) { res = true; return res; }
             else { res = false; }
             return res;
         }

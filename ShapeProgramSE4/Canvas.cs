@@ -64,6 +64,10 @@ namespace ShapeProgramSE4
             yPos = toY;
         }
 
+        /// <summary>
+        /// Method to draw string on canvas when error occurs (exception is hit)
+        /// </summary>
+        /// <param name="msg">Error message</param>
         public void DrawString(String msg)
         {
             g.DrawString(msg, new Font("Arial", 10), b, origPos, origPos);

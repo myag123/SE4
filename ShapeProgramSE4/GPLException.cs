@@ -10,6 +10,10 @@ namespace ShapeProgramSE4
     /// </summary>
    public class GPLException : Exception 
     {
+        /// <summary>
+        /// Constructor to extend base class of £xception to allow creation of custom error message.
+        /// </summary>
+        /// <param name="msg">Error message</param>
         public GPLException(String msg) : base(msg)
         { 
         

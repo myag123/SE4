@@ -20,13 +20,13 @@ namespace ShapeProgramSE4
     /// </summary>
     public partial class Form1 : Form
     {
-        //declaring constant variables
+        // Declaring constant variables
         const int mapWidth = 500;
         const int mapHeight = 448;
         const int screenWidth = 1110;
         const int screenHeight = 760;
 
-        //declaring constant keyword variables
+        // Declaring constant keyword variables
         const string syntDrwTo = "drawto";
         const string syntDrwSqu = "square";
         const string syntDrwRec = "rectangle";
@@ -51,10 +51,11 @@ namespace ShapeProgramSE4
 
         String title = "Graphical Programming Language Application c7207442";
         String command = "";
+        int i = 0;
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
         ColorDialog colorDialog = new ColorDialog();
-        Keywords keywords = new Keywords();
+        Keywords Keywords = new Keywords();
 
         /// <summary>
         /// Constructor for form, contains main entry point of code.
@@ -117,23 +118,23 @@ namespace ShapeProgramSE4
         /// <param name="e">Passes in button click event data</param>
         private void richTxtCmdLine_TextChanged(object sender, EventArgs e)
         {
-            keywords.chkKeyword(richTxtCmdLine, syntDrwTo, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntDrwSqu, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntDrwRec, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntDrwTri, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntDrwCir, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntMoveTo, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntRst, Color.Red, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntClr, Color.Red, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntWhl, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntLp, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntPen, Color.Purple, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntFil, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntOn, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntOff, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntVar, Color.Brown, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntMthd, Color.Brown, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntRn, Color.DarkGreen, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntDrwTo, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntDrwSqu, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntDrwRec, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntDrwTri, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntDrwCir, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntMoveTo, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntRst, Color.Red, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntClr, Color.Red, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntWhl, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntLp, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntPen, Color.Purple, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntFil, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntOn, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntOff, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntVar, Color.Brown, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntMthd, Color.Brown, 0);
+            Keywords.chkKeyword(richTxtCmdLine, syntRn, Color.DarkGreen, 0);
         }
 
         /// <summary>
@@ -144,28 +145,30 @@ namespace ShapeProgramSE4
         /// <param name="e">Passes in button click event data</param>
         private void richTxtCmdBox_TextChanged(object sender, EventArgs e)
         {
-            keywords.chkKeyword(richTxtCmdBox, syntDrwTo, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntDrwSqu, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntDrwRec, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntDrwTri, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntDrwCir, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntMoveTo, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntRst, Color.Red, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntClr, Color.Red, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntWhl, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntLp, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntPen, Color.Purple, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntFil, Color.Green, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntOn, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntOff, Color.Blue, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntVar, Color.Brown, 0);
-            keywords.chkKeyword(richTxtCmdLine, syntMthd, Color.Brown, 0);
-            keywords.chkKeyword(richTxtCmdBox, syntRn, Color.DarkGreen, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntDrwTo, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntDrwSqu, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntDrwRec, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntDrwTri, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntDrwCir, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntMoveTo, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntRst, Color.Red, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntClr, Color.Red, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntWhl, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntLp, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntPen, Color.Purple, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntFil, Color.Green, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntOn, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntOff, Color.Blue, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntVar, Color.Brown, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntMthd, Color.Brown, 0);
+            Keywords.chkKeyword(richTxtCmdBox, syntRn, Color.DarkGreen, 0);
         }
 
         /// <summary>
-        /// Method to check syntax as user is typing it into cmd box.
-        /// If syntax is invalid a message will appear.
+        /// Method for when user is typing into cmdBox.
+        /// When user hits enter after typing line of code each line is 
+        /// passed to ParseCommand with execution set as false so lines 
+        /// can be validated in the codechecker class.
         /// </summary>
         /// <param name="sender">Contains object that raised event.</param>
         /// <param name="e">Passes in button click event data</param>
@@ -174,10 +177,10 @@ namespace ShapeProgramSE4
             if (e.KeyCode == Keys.Enter) // If user hits enter key then input is passed to parser class line by line
             {
                 String[] allLines = richTxtCmdBox.Text.ToString().ToLower().Trim().Split("\n"); //  Creating string array - split by newline
-
-                for (int i = 0; i < allLines.Length; i++)
+                while (i < richTxtCmdBox.Lines.Length) 
                 {
                     MyParser.ParseCommand(allLines[i], false);
+                    i++;
                 }
 
                 Refresh(); // Update bitmap
@@ -207,7 +210,7 @@ namespace ShapeProgramSE4
 
         /// <summary>
         /// Method for when user clicks btnRun
-        /// Method passes user input to parser class when user clicks run button, it will pass each line in at a time to the Pa
+        /// Method passes user input to parser class when user clicks run button, it will pass all lines to ParseCommand.
         /// </summary>
         /// <param name="sender">Contains object that raised event.</param>
         /// <param name="e">Passes in button click event data</param>
@@ -308,6 +311,11 @@ namespace ShapeProgramSE4
         {
             MyCanvas.Clear();
             Refresh(); // Updating display
+        }
+
+        private void richTxtCmdBox_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

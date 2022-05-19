@@ -9,7 +9,6 @@ namespace ShapeProgramSE4
     /// Command Factory for commands.
     /// Following factory design pattern, to allow dependencies to come from this class.
     /// When command is passed to MakeCommand method a new object of a command is returned.
-    /// 
     /// </summary>
     public class CommandFactory
     {
@@ -32,8 +31,8 @@ namespace ShapeProgramSE4
             if (command.Equals("square")) { return new DrawSquare(); }
             if (command.Equals("triangle")) { return new DrawTriangle(); }
             if (command.Equals("fill")) { return new Fill(); }
-            if(command.Equals("var")) { Debug.WriteLine("object var created"); return new Var(); }
-            if (command.Equals("method")) { Debug.WriteLine("object mymethod created"); return new Method(); }
+            if(command.Equals("var")) {  return new Var(); }
+            if (command.Equals("method")) { return new Method(); }
             else { throw new ArgumentException("CommandFactory error: " + command + " is not valid."); }
             
         }

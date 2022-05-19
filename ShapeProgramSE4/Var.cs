@@ -32,6 +32,10 @@ namespace ShapeProgramSE4
             return this.name;
         }
 
+        /// <summary>
+        /// Method to set value.
+        /// </summary>
+        /// <param name="value">Value if variable</param>
         public void SetValue(int value)
         {
             this.value = value;
@@ -43,23 +47,22 @@ namespace ShapeProgramSE4
             return this.value;
         }
 
-
+        /// <summary>
+        /// Constructor for Var
+        /// </summary>
         public Var()
         { 
         
         }
-
-        public Var(String name, String varExpression, int varVal)
-        {
-            base.Set("Var", varVal);
-        }
         
-
+        /// <summary>
+        /// Execute method for Var.
+        /// </summary>
+        /// <returns>Returns true/.</returns>
         public override bool Execute()
         {
             return true;
         }
-
       
     }
 }

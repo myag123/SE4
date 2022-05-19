@@ -12,10 +12,13 @@ namespace ShapeProgramSE4
         public ArrayList methodList = new ArrayList();
         public String[] methList;
 
-        public string MethodName
+        /// <summary>
+        /// Method to set method name.
+        /// </summary>
+        public void SetName(String methodName)
         {
-            get => methodName;
-            set => methodName = value;
+            this.methodName = methodName;
+            methodNameList.Add(methodName);
         }
 
         /*
