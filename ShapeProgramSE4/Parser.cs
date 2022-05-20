@@ -29,9 +29,8 @@ namespace ShapeProgramSE4
         ArrayList varNameList = new ArrayList();
         ArrayList varValueList = new ArrayList();
 
-        //ArrayList declaration for methods
+        //ArrayList declaration for method
         ArrayList methodNameList = new ArrayList();
-        List<KeyValuePair<string, string>> methodLines = new List<KeyValuePair<string, string>>(); 
 
         Regex regexInt = new Regex(@"[\d]"); // Creating regular expression for numbers only
         Regex regexLetters = new Regex(@"^[a-zA-Z]+$"); // Creating regular expression for letters only
@@ -41,6 +40,7 @@ namespace ShapeProgramSE4
         CommandFactory CommFactory = new CommandFactory();
         Canvas Canvas;
         CodeChecker Validator = new CodeChecker();
+        Method mthd;// = (Method)CommFactory.MakeCommand("method"); // Creating object of Method class
 
         /// <summary>
         /// Constructor for parser class requires Canvas to be passed in.
@@ -49,6 +49,7 @@ namespace ShapeProgramSE4
         public Parser(Canvas c)
         {
            Canvas = c;
+
         }
 
         /// <summary>
@@ -63,7 +64,6 @@ namespace ShapeProgramSE4
             try
             {
                 Var varCommand = (Var)CommFactory.MakeCommand("var");  // Creating object of Var class
-                Method mthd = (Method)CommFactory.MakeCommand("method"); // Creating object of Method class
 
                 if (line.Equals("") == true) { throw new GPLException("\n No code to run."); } // If user enters in blank line, then exception is thrown
 
@@ -72,7 +72,8 @@ namespace ShapeProgramSE4
 
                 if (command.Equals("method") == true) // If command equals method
                 {
-                    if (execute == true) // If execute is true then method is stored in methodNameList and methodFlag is set to Y and methodFlag is set to N
+                    mthd = (Method)CommFactory.MakeCommand("method");
+                    if (execute == true) // If execute is true then method is stored in methodNameList and methodFlag is set to Y and methodRun is set to N
                     {
                         Debug.WriteLine("Method declared");
                         methodFlag = "Y";
@@ -118,17 +119,12 @@ namespace ShapeProgramSE4
                     name = splitter[0].ToString();
                     methodFlag = "X"; // Resetting flag ready for next method
 
-                    foreach (var element in methodLines.Where(pair => pair.Key == name).Select(pair => pair.Value)) // For each element found in methodLines where method name equals Key
+                    var iterator = mthd.GetMethodLinesIterator(); //Iterator design pattern
+
+                    while (iterator.MoveNext()) // While 
                     {
-                        //var values = methodLines.Where(pair => pair.Key == name).Select(pair => pair.Value);
-                        for (int i = 0; i < methodLines.Count; i++)
-                        {
-                            var item = methodLines.ElementAt(i);
-                            string itemKey = item.Key.ToString();
-                            string itemValue = item.Value.ToString();
-                            Debug.WriteLine(itemKey + " " + itemValue);
-                            ParseCommand(itemValue, true);
-                        }
+                        Debug.WriteLine(iterator.Current);
+                        ParseCommand(iterator.Current, true);
                         methodRun = "Y";
                     }
 
@@ -165,7 +161,7 @@ namespace ShapeProgramSE4
                             if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                             {
                                 string code = command +  " " + name + " = " + value;
-                                methodLines.Add(new KeyValuePair<string, string>(methodName, code)); // Storing methodName and code as user would type it in to methodLines
+                                mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                                 lineMethodCounter++; // Increases line
                                 Debug.WriteLine(code + " " + methodName + " added to method lines"); 
                             } 
@@ -231,9 +227,8 @@ namespace ShapeProgramSE4
                         if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                         {
                             string code = command + " " + name; 
-                            methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                            mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                             lineMethodCounter++; // Increases line
-                            Debug.WriteLine(code + " " + methodName + " added to method lines");
                         }
                     }
 
@@ -270,9 +265,8 @@ namespace ShapeProgramSE4
                                 if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                                 {
                                     string code =  name + " = " + value;
-                                    methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                                    mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                                     lineMethodCounter++; // Increases line
-                                    Debug.WriteLine(code + " " + methodName + " added to method lines");
                                 }
                             }
                             else if (!item.Contains(name)) { throw new GPLException("\n Cannot find variable " + name + "\n Please declare variable before it is set."); }
@@ -316,9 +310,8 @@ namespace ShapeProgramSE4
                                 if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                                 {
                                     string code = name + " = " + arrGetCalc.ToString();
-                                    methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                                    mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                                     lineMethodCounter++; // Increases line
-                                    Debug.WriteLine(code + " " + methodName + " added to method lines");
                                 }
 
                                 CalculateArrayVal(name, arrGetCalc, out result); // Passes calculation to CalculateArrayVal method and returns sum of calculation
@@ -415,9 +408,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (!methodFlag.Equals("Y"))
                     {
@@ -434,9 +426,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (!methodFlag.Equals("Y"))
                     { 
@@ -457,7 +448,7 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
                         Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
@@ -479,7 +470,7 @@ namespace ShapeProgramSE4
                         if (methodFlag == "Y") // If methodFlag equals Y (meaning method is during declaration)
                         {
                             string code = name + " " + colour;
-                            methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                            mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                             lineMethodCounter++; // Increases line
                             Debug.WriteLine(code + " " + methodName + " added to method lines");
                         }
@@ -509,9 +500,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (execute == true && regexInt.IsMatch(coords) && !methodFlag.Equals("Y"))  { c.Set(Canvas, name, coords);  c.Execute(); return c;  } // If execute is true and coords contain numbers parameters are passed to drawcircle class
                     else if (execute == true && regexLetters.IsMatch(coords) && !methodFlag.Equals("Y")) // If execute is true and coords contain letters
@@ -565,9 +555,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (execute == true && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1]) && !methodFlag.Equals("Y")) { r.Set(Canvas, name, coords); r.Execute(); return r; } // If execute is true and coords contain numbers parameters are passed to drawrectangle class
                     else if(execute == true && regexLetters.IsMatch(check[0]) && !methodFlag.Equals("Y") || regexLetters.IsMatch(check[1]) && !methodFlag.Equals("Y")) // If execute is true and first parameter or second parameter equals letter
@@ -665,9 +654,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (execute == true && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1]) && !methodFlag.Equals("Y")) { p.Set(Canvas, name, coords); p.Execute(); return p; } // If execute is true and coords contain numbers parameters are passed to drawpie class
                     else if (execute == true && regexLetters.IsMatch(check[0]) && !methodFlag.Equals("Y") || regexLetters.IsMatch(check[1]) && !methodFlag.Equals("Y")) // If execute is true and first parameter or second parameter equals letter
@@ -764,7 +752,7 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
                         Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
@@ -865,9 +853,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (execute == true && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1]) && !methodFlag.Equals("Y")) { t.Set(Canvas, name, coords); t.Execute(); return t; } // If execute is true and coords contain numbers parameters are passed to drawtriangle class
                     else if (execute == true && regexLetters.IsMatch(check[0]) && !methodFlag.Equals("Y") || regexLetters.IsMatch(check[1]) && !methodFlag.Equals("Y")) // If execute is true and first parameter or second parameter equals letter
@@ -966,9 +953,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (execute == true && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1]) && !methodFlag.Equals("Y")) { d.Set(Canvas, name, coords); d.Execute(); return d; } // If execute is true and coords contain numbers parameters are passed to drawto class
                     else if (execute == true && regexLetters.IsMatch(check[0]) && !methodFlag.Equals("Y") || regexLetters.IsMatch(check[1]) && !methodFlag.Equals("Y")) // If execute is true and first parameter or second parameter equals letter
@@ -1067,9 +1053,8 @@ namespace ShapeProgramSE4
                     if (methodFlag == "Y" && execute == true) // If methodFlag equals Y (meaning method is during declaration)
                     {
                         string code = name + " " + coords;
-                        methodLines.Add(new KeyValuePair<string, string>(methodName, code)); //Storing methodName and code as user would type it in to methodLines
+                        mthd.SetMethodLine(code); // Setting code in method declaration to Method class
                         lineMethodCounter++; // Increases line
-                        Debug.WriteLine(code + " " + methodName + " added to method lines");
                     }
                     else if (execute == true && regexInt.IsMatch(check[0]) && regexInt.IsMatch(check[1]) && !methodFlag.Equals("Y")) { m.Set(Canvas, name, coords); m.Execute(); return m; } // If execute is true and coords contain numbers parameters are passed to drawto class
                     else if (execute == true && regexLetters.IsMatch(check[0]) && !methodFlag.Equals("Y") || regexLetters.IsMatch(check[1]) && !methodFlag.Equals("Y")) // If execute is true and first parameter or second parameter equals letter

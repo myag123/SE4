@@ -231,7 +231,7 @@
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.canvasBox);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Graphical Programming Language Application";
             ((System.ComponentModel.ISupportInitialize)(this.canvasBox)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
