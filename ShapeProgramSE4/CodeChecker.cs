@@ -38,11 +38,13 @@ namespace ShapeProgramSE4
             drwCmds.Add("pen");       // [6]
             drwCmds.Add("fill");      // [7]
             drwCmds.Add("pie");       // [8]
+            drwCmds.Add("loop");      // [9]
 
             shrtDrwCmds.Add("clear"); // [0]
             shrtDrwCmds.Add("reset"); // [1]
             shrtDrwCmds.Add("method"); // [2]
             shrtDrwCmds.Add("endmethod"); // [3]
+            shrtDrwCmds.Add("endloop"); // [4]
 
             varCmds.Add("var"); // [0]
         }
@@ -65,7 +67,7 @@ namespace ShapeProgramSE4
                 else { res = false; return res; } 
             }
 
-            // If command is any of the draw commands with 2 parameters required 
+            // If command is any of the draw commands with more than one parameter required 
             else if (cmd.Equals(drwCmds[2]) == true || cmd.Equals(drwCmds[3]) == true|| cmd.Equals(drwCmds[4]) == true || cmd.Equals(drwCmds[5]) == true || cmd.Equals(drwCmds[8]) == true)
             {
                 String[] splitter;
@@ -104,6 +106,12 @@ namespace ShapeProgramSE4
                     res = false;
                 }
             }
+            else if(cmd.Equals(drwCmds[9]) == true) // If command equals loop
+            {
+                if(regexInt.IsMatch(value) == true)
+                { res = true; return res; }
+                else { res = false; }
+            }
             else { res = false; }
             return res;
         }
@@ -116,8 +124,8 @@ namespace ShapeProgramSE4
         /// <returns>true or false</returns>
         public bool DrawShrtCmdRules(String cmd, out bool res)
         {
-            // If command equals clear, reset, method or endmethod then res equals true
-            if (cmd.Equals(shrtDrwCmds[0]) == true || cmd.Equals(shrtDrwCmds[1]) == true || cmd.Equals(shrtDrwCmds[2]) == true || cmd.Equals(shrtDrwCmds[3]) == true) { res = true; return res; }
+            // If command equals clear, reset, method, endmethod or endloop then res equals true
+            if (cmd.Equals(shrtDrwCmds[0]) == true || cmd.Equals(shrtDrwCmds[1]) == true || cmd.Equals(shrtDrwCmds[2]) == true || cmd.Equals(shrtDrwCmds[3]) == true || cmd.Equals(shrtDrwCmds[4]) == true) { res = true; return res; }
             else { res = false; }
             return res;
         }
@@ -151,6 +159,23 @@ namespace ShapeProgramSE4
         {
             if (regexLetters.IsMatch(name) && regexInt.IsMatch(value.ToString())) //If command equals var and command contains only letters and value contains only numbers
             { res = true;
+                return res;
+            }
+            else { res = false; }
+            return res;
+        }
+
+        /// <summary>
+        /// Method to check variable before it is passed into Loop class.
+        /// </summary>
+        /// <param name="var">variable claculation</param>
+        /// <param name="res">return true or false</param>
+        /// <returns></returns>
+        public bool DeclareVarForLoop(String var, out bool res)
+        {
+            if(var.Contains("=") || var.Contains("*") || var.Contains("+") || var.Contains("-")|| var.Contains("/"))
+            {   
+                res = true;
                 return res;
             }
             else { res = false; }

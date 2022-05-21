@@ -117,7 +117,7 @@ namespace UnitTestsPLE
             s.GetShape("rectangle"); Assert.AreEqual(r, r);
             s.GetShape("square");    Assert.AreEqual(sq, sq);
             s.GetShape("triangle");  Assert.AreEqual(t, t);
-            s.GetShape("pie"); Assert.AreEqual(p, p);
+            s.GetShape("pie");       Assert.AreEqual(p, p);
 
             /* Testing Circle
             c.Set(Color.Black, 150, 200, 60);
@@ -152,6 +152,7 @@ namespace UnitTestsPLE
             DrawTo dt = new DrawTo();
             Fill f = new Fill();
             Method m = new Method();
+            Loop l = new Loop();
             MoveTo mt = new MoveTo();
             PenColor pc = new PenColor();
             Reset r = new Reset();
@@ -164,6 +165,7 @@ namespace UnitTestsPLE
             cf.MakeCommand("fill");      Assert.AreEqual(f, f);
             cf.MakeCommand("rectangle"); Assert.AreEqual(dr, dr);
             cf.MakeCommand("method");    Assert.AreEqual(m, m);
+            cf.MakeCommand("loop");      Assert.AreEqual(l, l);
             cf.MakeCommand("moveto");    Assert.AreEqual(mt, mt);
             cf.MakeCommand("pen");       Assert.AreEqual(pc, pc);
             cf.MakeCommand("reset");     Assert.AreEqual(r, r);

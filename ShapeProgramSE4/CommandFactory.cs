@@ -34,6 +34,7 @@ namespace ShapeProgramSE4
             if (command.Equals("fill")) { return new Fill(); }
             if(command.Equals("var")) {  return new Var(); }
             if (command.Equals("method")) { return new Method(); }
+            if (command.Equals("loop")) { return new Loop(); }
             else { throw new ArgumentException("CommandFactory error: " + command + " is not valid."); }
             
         }

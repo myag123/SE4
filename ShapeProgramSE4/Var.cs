@@ -12,6 +12,7 @@ namespace ShapeProgramSE4
     {
         private String name;
         private int value;
+        int position;
         private ArrayList varNameList = new ArrayList();
         private ArrayList varValueList = new ArrayList();
 
@@ -42,8 +43,11 @@ namespace ShapeProgramSE4
             varValueList.Add(value);
         }
 
-        public int GetValue()
+        public int GetValue(string varName)
         {
+            int position = varValueList.IndexOf(varName);
+            string result = varValueList[position].ToString();
+            value = Int32.Parse(result);
             return this.value;
         }
 

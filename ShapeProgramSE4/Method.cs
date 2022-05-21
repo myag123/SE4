@@ -43,17 +43,18 @@ namespace ShapeProgramSE4
         }
 
         /// <summary>
-        /// Creates an Iterator object
+        /// Creates an Iterator object and passes list to MethodIterator class.
         /// </summary>
         /// <returns>New MethodIterator ArrayList</returns>
-        public IMethodIterator GetMethodLinesIterator()
+        public IProgramIterator GetMethodLinesIterator()
          {
              return new MethodIterator(methodLines);
          }
 
         public override bool Execute()
         {
-            return true;
+            throw new NotImplementedException();
         }
     }
 }
+

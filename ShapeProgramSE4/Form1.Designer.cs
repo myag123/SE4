@@ -54,7 +54,7 @@
             this.canvasBox.BackColor = System.Drawing.Color.DeepPink;
             this.canvasBox.Location = new System.Drawing.Point(476, 109);
             this.canvasBox.Name = "canvasBox";
-            this.canvasBox.Size = new System.Drawing.Size(500, 448);
+            this.canvasBox.Size = new System.Drawing.Size(610, 448);
             this.canvasBox.TabIndex = 0;
             this.canvasBox.TabStop = false;
             this.canvasBox.Paint += new System.Windows.Forms.PaintEventHandler(this.canvasBox_Paint);
@@ -74,9 +74,9 @@
             this.lbl1.AutoSize = true;
             this.lbl1.Location = new System.Drawing.Point(12, 92);
             this.lbl1.Name = "lbl1";
-            this.lbl1.Size = new System.Drawing.Size(195, 20);
+            this.lbl1.Size = new System.Drawing.Size(175, 20);
             this.lbl1.TabIndex = 3;
-            this.lbl1.Text = "Paste your command below:";
+            this.lbl1.Text = "Type in command below:";
             // 
             // lbl2
             // 
@@ -98,7 +98,7 @@
             this.toolStripListBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(997, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1157, 27);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -185,7 +185,7 @@
             // 
             // btnSaveCan
             // 
-            this.btnSaveCan.Location = new System.Drawing.Point(759, 601);
+            this.btnSaveCan.Location = new System.Drawing.Point(870, 576);
             this.btnSaveCan.Name = "btnSaveCan";
             this.btnSaveCan.Size = new System.Drawing.Size(94, 48);
             this.btnSaveCan.TabIndex = 16;
@@ -195,7 +195,7 @@
             // 
             // btnLoadCan
             // 
-            this.btnLoadCan.Location = new System.Drawing.Point(882, 601);
+            this.btnLoadCan.Location = new System.Drawing.Point(992, 576);
             this.btnLoadCan.Name = "btnLoadCan";
             this.btnLoadCan.Size = new System.Drawing.Size(94, 48);
             this.btnLoadCan.TabIndex = 17;
@@ -217,7 +217,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(997, 727);
+            this.ClientSize = new System.Drawing.Size(1157, 678);
             this.Controls.Add(this.btnClr);
             this.Controls.Add(this.btnLoadCan);
             this.Controls.Add(this.btnSaveCan);

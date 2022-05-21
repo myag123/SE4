@@ -21,10 +21,10 @@ namespace ShapeProgramSE4
     public partial class Form1 : Form
     {
         // Declaring constant variables
-        const int mapWidth = 500;
+        const int mapWidth = 610;
         const int mapHeight = 448;
-        const int screenWidth = 1110;
-        const int screenHeight = 760;
+        const int screenWidth = 1175;
+        const int screenHeight = 725;
 
         // Declaring constant keyword variables
         const string syntDrwTo = "drawto";
@@ -105,9 +105,12 @@ namespace ShapeProgramSE4
         /// <param name="e">Passes in pressed key event.</param>
         private void toolStripListBtn_Click(object sender, EventArgs e)
         {
-            String message = "Valid syntax examples" + "\n MoveTo 150,300 - Moves axis to new coordinates \n DrawTo 120,230 - Draws line between given coordinates \n Rectangle 150,200 - Draws rectangle to specified size" +
-                " \n Triangle 150,200 - Draws triangle to specified size \n Square 150,150 - Draws square to specified size \n Circle 100 - Draws circle to specified size \n Reset - Moves pen back to top left corner of screen "
-                + "\n Clear - Clears canvas \n Pen green - changes pen colour to green \n var apple - creates a variable called apple \n var apple = 40 + 2 - creates a variable called apple with a value of 42 ";
+            String message = "Valid syntax examples" + "\n moveTo 150,300 - Moves axis to new coordinates \n drawto 120,230 - Draws line between given coordinates \n rectangle 150,200 - Draws rectangle to specified size" +
+                " \n triangle 150,200 - Draws triangle to specified size \n square 150,150 - Draws square to specified size \n circle 100 - Draws circle to specified size \n pie 150,200 - Draws pie to specified size \n reset - Moves pen back to top left corner of screen "
+                + "\n clear - Clears canvas \n pen green - changes pen colour to green, type any valid colour \n var apple - creates a variable called apple \n var apple = 40 + 2 - creates a variable called apple with a value of 42 \n apple = 96 - changes the value of an already declared variable \n"
+                + "\n Below is how a method is declared. To call the method after declaration simply type its name drawshape\n method drawshape \n      circle 60 \n      fill on \n      moveto 150,230 \n      rectangle 140,50 \n endmethod \n "
+                + "\n  Below if statement will draw a circle and a rectangle if variable apple is equal to 10 \n  if apple==15 \n    circle 60 \n    rectangle 56,100 \n endif \n Below is how a loop is declared. (Make sure to specify the number of iterations) \n" +
+                "var x = 60 \n loop 3 \n moveto x,50 \n square 62,62 \n x = x + 50 \n endloop ";
             MessageBox.Show(message, title); // Displaying messagebox to user
         }
 
@@ -177,16 +180,27 @@ namespace ShapeProgramSE4
         /// <param name="e">Passes in button click event data</param>
         private void richTxtCmdBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) // If user hits enter key then input is passed to parser class line by line
+            try
             {
-                String[] allLines = richTxtCmdBox.Text.ToString().ToLower().Trim().Split("\n"); //  Creating string array - split by newline
-                while (i < richTxtCmdBox.Lines.Length) // While i is less than lines in cmdBox - each line is passed to ParseCommand line by line
+                if (e.KeyCode == Keys.Enter) // If user hits enter key then input is passed to parser class line by line
                 {
-                    MyParser.ParseCommand(allLines[i], false);
-                    i++;
-                }
+                    String[] allLines = richTxtCmdBox.Text.ToString().ToLower().Trim().Split("\n"); //  Creating string array - split by newline
+                    while (i < richTxtCmdBox.Lines.Length) // While i is less than lines in cmdBox - each line is passed to ParseCommand line by line
+                    {
+                        MyParser.ParseCommand(allLines[i], false);
+                        i++;
+                    }
 
-                Refresh(); // Update bitmap
+                    Refresh(); // Update bitmap
+                }
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                MyCanvas.DrawString("\n Blank line detected. Please remove and re-enter! \n");
+            }
+            catch (GPLException ex)
+            {
+                MyCanvas.DrawString(ex.Message);
             }
         }
 

@@ -7,11 +7,11 @@ using System.Text;
 namespace ShapeProgramSE4
 {
     /// <summary>
-    /// MethodIterator that extends IMethodIterator the iterator object.
+    /// MethodIterator that extends IProgramIterator the iterator object.
     /// methodLines ArrayList from Method class is passed into MethodIterator and set to a readonly object.
-    /// This allows methodLines to be iterated through a range of different methods to get
+    /// This allows the contents of the List methodLines to be kept track of while methods are used to iterate through the elements inside.
     /// </summary>
-    public class MethodIterator : IMethodIterator // Iterator object
+    public class MethodIterator : IProgramIterator // Iterator object
     {
         private readonly ArrayList methodLines;
         private int position;
@@ -23,11 +23,13 @@ namespace ShapeProgramSE4
         public MethodIterator(ArrayList methodLines) 
         {
             this.methodLines = methodLines;
-            this.position = -1; // Setting position to -1 
+            this.position = -1; // Setting position to -1 so MoveNext can find the first element of array
         }
 
+        /// <summary>
+        /// Method to get the current element in methodLines array
+        /// </summary>
         public string Current => methodLines[position].ToString();
-
 
         /// <summary>
         /// Boolean method MoveNext will return true if the methodLines count is not equal to 0
